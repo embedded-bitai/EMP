@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { makeStyles } from '../components/alpha_style/node_modules/@material-ui/core';
 import TopBar from './TopBar';
@@ -47,3 +47,4 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
+ */
