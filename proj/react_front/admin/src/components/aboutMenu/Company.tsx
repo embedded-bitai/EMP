@@ -1,9 +1,12 @@
 import React from "react";
-import ProductCard from "../../views/product/productListView/ProductCard";
+import DashedBorderSixFeatures from '../intro/DashedBorderSixFeatures';
+import ProductCard from "../intro/ProductCard";
+
 
 const Company = () => <div>
     <h1>회사 소개 내용</h1>
-    <ProductCard/>
+    <DashedBorderSixFeatures/>
+    {/* <ProductCard/> */}
 </div>
 
 export default Company
