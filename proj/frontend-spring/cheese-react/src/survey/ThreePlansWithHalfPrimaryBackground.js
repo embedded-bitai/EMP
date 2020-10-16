@@ -2,10 +2,10 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "../home/misc/Headings.js";
-import { SectionDescription } from "../home/misc/Typography.js";
-import { PrimaryButton as PrimaryButtonBase } from "../home/misc/Buttons.js";
-import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "../home/misc/Layouts.js";
+import { SectionHeading, Subheading as SubheadingBase } from "../home/common/Headings.js";
+import { SectionDescription } from "../home/common/Typography.js";
+import { PrimaryButton as PrimaryButtonBase } from "../home/common/Buttons.js";
+import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "../home/common/Layouts.js";
 import { ReactComponent as CheckboxIcon } from "../images/checkbox-circle.svg";
 
 const Container = tw(ContainerBase)`bg-primary-900 text-gray-100 -mx-8 px-8`;

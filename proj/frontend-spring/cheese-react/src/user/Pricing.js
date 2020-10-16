@@ -1,5 +1,5 @@
 import React from "react";
-import AnimationRevealPage from "home/AnimationRevealPage.js";
+import AnimationRevealPage from "../home/AnimationRevealPage.js";
 import Header from "home/Headers.js";
 import Pricing from "components/pricing/TwoPlansWithDurationSwitcher.js";
 import Testimonial from "components/testimonials/ThreeColumnWithProfileImage.js";

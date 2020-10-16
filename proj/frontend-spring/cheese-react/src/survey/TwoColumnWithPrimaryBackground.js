@@ -5,11 +5,11 @@ import HeaderBase, {
   LogoLink as LogoLinkBase,
   // NavLink as NavLinkBase,
   // PrimaryLink as PrimaryLinkBase
-} from "../home/light.js";
-import { Container as ContainerBase, ContentWithVerticalPadding, Content2Xl } from "../home/misc/Layouts.js";
-import { SectionHeading } from "../home/misc/Headings.js";
-import { SectionDescription } from "../home/misc/Typography.js";
-import { PrimaryButton as PrimaryButtonBase } from "../home/misc/Buttons.js";
+} from "../home/common/Header.js";
+import { Container as ContainerBase, ContentWithVerticalPadding, Content2Xl } from "../home/common/Layouts.js";
+import { SectionHeading } from "../home/common/Headings.js";
+import { SectionDescription } from "../home/common/Typography.js";
+import { PrimaryButton as PrimaryButtonBase } from "../home/common/Buttons.js";
 import logoImageSrc from "../images/logo-light.svg";
 import serverIllustrationImageSrc from "../images/server-illustration-2.svg";
 

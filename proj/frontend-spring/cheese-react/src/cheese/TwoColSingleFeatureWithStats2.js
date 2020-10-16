@@ -2,8 +2,8 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "../home/misc/Headings.js";
-import { PrimaryButton as PrimaryButtonBase } from "../home/misc/Buttons.js";
+import { SectionHeading, Subheading as SubheadingBase } from "../home/common/Headings.js";
+import { PrimaryButton as PrimaryButtonBase } from "../home/common/Buttons.js";
 import StatsIllustrationSrc from "../images/stats-illustration.svg";
 import { ReactComponent as SvgDotPattern } from "../images/dot-pattern.svg";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { PrimaryButton as PrimaryButtonBase } from "../home/misc/Buttons.js";
+import { PrimaryButton as PrimaryButtonBase } from "../home/common/Buttons.js";
 
 import LogoImage from "../images/logo.svg";
 import { ReactComponent as FacebookIcon } from "../images/facebook-icon.svg";

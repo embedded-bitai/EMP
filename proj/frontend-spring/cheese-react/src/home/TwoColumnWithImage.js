@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading as HeadingTitle } from "./misc/Headings.js";
+import { SectionHeading as HeadingTitle } from "./common/Headings.js";
 import { ReactComponent as QuotesLeftIcon } from "../images/quotes-l.svg";
 import { ReactComponent as QuotesRightIcon } from "../images/quotes-r.svg";
 import { ReactComponent as ArrowLeftIcon } from "../images/arrow-left-2-icon.svg";

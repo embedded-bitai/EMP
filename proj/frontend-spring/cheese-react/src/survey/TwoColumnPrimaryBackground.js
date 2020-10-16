@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled, { css } from "styled-components/macro"; //eslint-disable-line
-import { Container, ContentWithPaddingXl } from "../home/misc/Layouts.js";
-import { SectionHeading, Subheading as SubheadingBase } from "../home/misc/Headings.js";
-import { SectionDescription } from "../home/misc/Typography.js";
+import { Container, ContentWithPaddingXl } from "../home/common/Layouts.js";
+import { SectionHeading, Subheading as SubheadingBase } from "../home/common/Headings.js";
+import { SectionDescription } from "../home/common/Typography.js";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 
 const PrimaryBackgroundContainer = tw(Container)`-mx-8 px-8 bg-primary-900 text-gray-100`;
