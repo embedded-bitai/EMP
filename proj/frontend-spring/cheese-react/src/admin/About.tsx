@@ -4,6 +4,7 @@ import {Company, History, Services, Location} from './aboutMenu/index'
 import {Route} from 'react-router-dom'
 
 const About = ({match} : { match: any }) => {
+    
     return (
         <PageTemplate>
             <section className="about">

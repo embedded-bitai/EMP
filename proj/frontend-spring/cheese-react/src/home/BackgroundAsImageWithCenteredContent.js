@@ -2,7 +2,7 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-
+import axios from 'axios'
 
 // const PrimaryLink = tw(PrimaryLinkBase)`rounded-full`
 const Container = styled.div`
@@ -24,6 +24,15 @@ const Heading = styled.h1`
 
 const PrimaryAction = tw.button`rounded-full px-8 py-3 mt-10 text-sm sm:text-base sm:mt-16 sm:px-8 sm:py-4 bg-gray-100 font-bold shadow transition duration-300 bg-yellow-500 text-gray-100 hocus:bg-yellow-700 hocus:text-gray-200 focus:outline-none focus:shadow-outline`;
 
+const homeAxios = () => {
+  axios.get(`http://localhost:8080/api`)
+    .then(res => {
+      alert(`Home Connection Success !!`)
+    }).catch(
+      e => alert(`Home Failure`)
+    )
+}
+
 export default () => {
   return (
     <div>
@@ -36,6 +45,7 @@ export default () => {
                 <br />
                 설문지, 상품 리스트 페이지 */}
             </Heading>
+            <button onClick={homeAxios}>Home axios</button>
             <PrimaryAction href="/components/blocks/Pricing/ThreePlansWithHalfPrimaryBackground">
               Search Events Near Me
             </PrimaryAction>

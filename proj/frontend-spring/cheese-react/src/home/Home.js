@@ -5,8 +5,8 @@ import AnimationRevealPage from "./AnimationPage.js";
 // import Header from "./common/header-practice.js"
 import Hero from "./BackgroundAsImageWithCenteredContent.js";
 import Features from "./VerticalWithAlternateImageAndText.js";
-import Blog from "./Blogs.js";
-import Testimonial from "./TwoColumnWithImage.js";
+// import Blog from "./Blogs.js";
+// import Testimonial from "./TwoColumnWithImage.js";
 import ContactUsForm from "./SimpleContactUs.js";
 import Footer from "./common/Footer.js";
 

@@ -1,36 +1,47 @@
 import React from "react";
 import tw from "twin.macro";
+import axios from "axios"
 import AnimationRevealPage from "../home/AnimationPage.js";
 import Hero from "./TwoColumnWithVideo.js";
-// import Header from '../home/common/Header.js'
 // import StyledHeader from '../home/BackgroundAsImageWithCenteredContent'
 
-import Features from "./ThreeColSimple.js";
-import MainFeature from "./TwoColWithButton.js";
-import MainFeature2 from "./TwoColSingleFeatureWithStats2.js";
+// import Features from "./ThreeColSimple.js";
+// import MainFeature from "./TwoColWithButton.js";
+// import MainFeature2 from "./TwoColSingleFeatureWithStats2.js";
 
 import TabGrid from "./TabCardGrid.js";
 import Testimonial from "./ThreeColumnWithProfileImage.js";
 // import Footer from "./FiveColumnWithInputForm.js";
 import Footer from "../home/common/Footer.js";
 
-import chefIconImageSrc from "../images/chef-icon.svg";
-import celebrationIconImageSrc from "../images/celebration-icon.svg";
-import shopIconImageSrc from "../images/shop-icon.svg";
+// import chefIconImageSrc from "../images/chef-icon.svg";
+// import celebrationIconImageSrc from "../images/celebration-icon.svg";
+// import shopIconImageSrc from "../images/shop-icon.svg";
 
 import Header from "../home/common/Header.js";
 import Blog from "../home/Blogs.js";
 
 export default () => {
-  const Subheading = tw.span`tracking-wider text-sm font-medium`;
+  // const Subheading = tw.span`tracking-wider text-sm font-medium`;
   const HighlightedText = tw.span`bg-primary-500 text-gray-100 px-4 transform -skew-x-12 inline-block`;
   // const HighlightedTextInverse = tw.span`bg-gray-100 text-primary-500 px-4 transform -skew-x-12 inline-block`;
-  const Description = tw.span`inline-block mt-8`;
+  // const Description = tw.span`inline-block mt-8`;
   const imageCss = tw`rounded-4xl`;
+
+  const cheeseAxios = () => {
+    axios.get(`http://localhost:8080/api/cheese`)
+      .then(res => {
+        alert(`Cheese Connection Success !!`)
+      }).catch(
+        e => alert(`Cheese Failure`)
+      )
+  }
+
   return (
     <div>
       <Header />
       <AnimationRevealPage>
+        <button onClick={cheeseAxios}>Cheese axios</button>
         <Hero
           heading={<>Delicious & Affordable <HighlightedText>Cheese Near You. 랜덤 치즈 (이벤트,광고) 보여주기</HighlightedText></>}
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."

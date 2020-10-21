@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import tw from "twin.macro"; //eslint-disable-line
+import axios from 'axios'
 import Customer from './Customer'
 import '../App.css';
 import Paper from '@material-ui/core/Paper';
@@ -56,9 +57,20 @@ const customers = [
 class BoardPage extends Component {
 render() {
 const { classes } = this.props;
+
+const fnqAxios = () => {
+    axios.get(`http://localhost:8080/api/fnq`)
+        .then(res => {
+            alert(`Fnq Connection Success !!`)
+        }).catch(
+            e => alert(`Fnq Failure`)
+        )
+}
+
 return (
     <div>
         <Header />
+        <button onClick={fnqAxios}>Fnq axios</button>
         <Paper className={classes.root}>
             <Table className={classes.table}>
                 <TableHead>
