@@ -1,6 +1,6 @@
 import React from "react";
 import tw from "twin.macro";
-import AnimationRevealPage from "../home/AnimationRevealPage.js";
+import AnimationRevealPage from "../home/AnimationPage.js";
 import Hero from "./TwoColumnWithVideo.js";
 // import Header from '../home/common/Header.js'
 // import StyledHeader from '../home/BackgroundAsImageWithCenteredContent'
@@ -19,6 +19,7 @@ import celebrationIconImageSrc from "../images/celebration-icon.svg";
 import shopIconImageSrc from "../images/shop-icon.svg";
 
 import Header from "../home/common/Header.js";
+import Blog from "../home/Blogs.js";
 
 export default () => {
   const Subheading = tw.span`tracking-wider text-sm font-medium`;
@@ -31,7 +32,7 @@ export default () => {
       <Header />
       <AnimationRevealPage>
         <Hero
-          heading={<>Delicious & Affordable <HighlightedText>Meals Near You.</HighlightedText></>}
+          heading={<>Delicious & Affordable <HighlightedText>Cheese Near You. 랜덤 치즈 (이벤트,광고) 보여주기</HighlightedText></>}
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           imageSrc="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=768&q=80"
           imageCss={imageCss}
@@ -39,7 +40,7 @@ export default () => {
           primaryButtonText="Order Now"
           watchVideoButtonText="Meet The Chefs"
         />
-        <MainFeature
+        {/* <MainFeature
           subheading={<Subheading>Established Since 2014</Subheading>}
           heading={
             <>
@@ -65,7 +66,8 @@ export default () => {
           imageCss={imageCss}
           imageDecoratorBlob={true}
           imageDecoratorBlobCss={tw`left-1/2 -translate-x-1/2 md:w-32 md:h-32 opacity-25`}
-        />
+        /> */}
+        <Blog />
         </AnimationRevealPage>
 
         {/* TabGrid Component also accepts a tabs prop to customize the tabs and its content directly. Please open the TabGrid component file to see the structure of the tabs props.*/}
@@ -77,7 +79,7 @@ export default () => {
           }
         />
         <AnimationRevealPage>
-        <Features
+        {/* <Features
           heading={
             <>
               Amazing <HighlightedText>Services.</HighlightedText>
@@ -133,7 +135,7 @@ export default () => {
           imageDecoratorBlob={true}
           imageDecoratorBlobCss={tw`left-1/2 md:w-32 md:h-32 -translate-x-1/2 opacity-25`}
           textOnLeft={true}
-        />
+        /> */}
         <Testimonial
           subheading=""
           heading={<>Customers <HighlightedText>Love Us.</HighlightedText></>}

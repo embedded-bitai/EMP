@@ -2,7 +2,7 @@ import React from "react";
 import tw from "twin.macro"; //eslint-disable-line
 import "tailwindcss/dist/base.css";
 import "../styles/globalStyles.css";
-import AnimationRevealPage from "../home/AnimationRevealPage.js";
+import AnimationRevealPage from "../home/AnimationPage.js";
 import Header from "../home/common/Header.js";
 import Hero from "./TwoColumnWithPrimaryBackground.js";
 import Pricing from "./ThreePlansWithHalfPrimaryBackground.js";

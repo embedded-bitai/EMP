@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro"; //eslint-disable-line
 import { Link } from 'react-router-dom'; //eslint-disable-line
-import AnimationRevealPage from "./AnimationRevealPage.js";
+import AnimationRevealPage from "./AnimationPage.js";
 // import Header from "./common/header-practice.js"
 import Hero from "./BackgroundAsImageWithCenteredContent.js";
 import Features from "./VerticalWithAlternateImageAndText.js";
@@ -17,8 +17,8 @@ const Home = () => <div className="home">
   <Hero />
   <AnimationRevealPage>
     <Features />
-    <Blog />
-    <Testimonial />
+    {/* <Blog />
+    <Testimonial /> */}
     <ContactUsForm />
   </AnimationRevealPage>
   <Footer />

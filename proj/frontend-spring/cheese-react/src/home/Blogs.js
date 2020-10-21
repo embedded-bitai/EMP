@@ -57,7 +57,7 @@ export default () => {
     <Container>
       <Content>
         <HeadingInfoContainer>
-          <HeadingTitle>Popular Blog Posts</HeadingTitle>
+          <HeadingTitle>베스트 상품</HeadingTitle>
           <HeadingDescription>Some amazing blog posts that are written by even more amazing people.</HeadingDescription>
         </HeadingInfoContainer>
         <ThreeColumn>

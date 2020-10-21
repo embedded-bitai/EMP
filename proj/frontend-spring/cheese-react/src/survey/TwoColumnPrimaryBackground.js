@@ -7,7 +7,7 @@ import { SectionHeading, Subheading as SubheadingBase } from "../home/common/Hea
 import { SectionDescription } from "../home/common/Typography.js";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 
-const PrimaryBackgroundContainer = tw(Container)`-mx-8 px-8 bg-primary-900 text-gray-100`;
+const PrimaryBackgroundContainer = tw(Container)`-mx-8 px-8 bg-yellow-500 text-gray-100 text-black`;
 
 const HeadingContainer = tw.div``;
 const Subheading = tw(SubheadingBase)`text-center text-gray-100 mb-4`;
@@ -16,7 +16,7 @@ const Description = tw(SectionDescription)`mx-auto text-center text-gray-300`;
 
 const FaqsContainer = tw.div`mt-10 sm:mt-16 w-full flex-1 lg:flex justify-between items-start max-w-screen-lg mx-auto`;
 const FaqsColumn = tw.div`w-full lg:max-w-lg lg:mr-12 last:mr-0`;
-const Faq = tw.div`select-none cursor-pointer border-b-2 border-primary-300 hover:border-primary-500 transition-colors duration-300 py-6`;
+const Faq = tw.div`select-none cursor-pointer border-b-2 border-yellow-300 hover:border-yellow-500 transition-colors duration-300 py-6`;
 const Question = tw.div`flex justify-between items-center`;
 const QuestionText = tw.div`text-sm sm:text-lg font-semibold tracking-wide`;
 const QuestionToggleIcon = styled(motion.span)`
