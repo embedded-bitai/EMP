@@ -12,17 +12,18 @@ import Footer from "./common/Footer.js";
 
 import Header from "./common/Header.js";
 
-const Home = () => <div className="home">
-  <Header />
-  <Hero />
-  <AnimationRevealPage>
-    <Features />
-    {/* <Blog />
-    <Testimonial /> */}
-    <ContactUsForm />
-  </AnimationRevealPage>
-  <Footer />
-  
-</div>
+const Home = () => {
+  return (<>
+      <Header />
+      <Hero />
+      <AnimationRevealPage>
+        <Features />
+        {/* <Blog />
+        <Testimonial /> */}
+        <ContactUsForm />
+      </AnimationRevealPage>
+      <Footer />
+  </>)
+}
 
 export default Home

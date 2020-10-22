@@ -12,7 +12,7 @@ import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 
 const Header = tw.header`
   flex justify-between items-center
-  max-w-screen-xl mx-auto pt-5 pb-10 my-auto 
+  max-w-screen-xl mx-auto pt-4 pb-3 mb-0
 `;
 
 export const NavLinks = tw.div`inline-block`;
@@ -74,22 +74,6 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
       <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/signup">Sign Up</PrimaryLink>
     </NavLinks>
   );
-
-  // const defaultLinks = ({ match }) => <div className={ "about-menu" }>
-  //   <li>
-  //     <NavLinks key={1}>
-  //       <NavLink href="/" style={ match.isExact && selectedStyle }>홈</NavLink>
-  //       <NavLink href="/menu" activeStyle={ selectedStyle }>치즈</NavLink>
-  //       <NavLink href="order" activeStyle={ selectedStyle }>주문</NavLink>
-  //       <NavLink href="/board" activeStyle={ selectedStyle }>F&Q</NavLink>
-  //       <NavLink href="/survey" activeStyle={ selectedStyle }>추천</NavLink>
-  //       <NavLink href="/admin" activeStyle={ selectedStyle }>Admin</NavLink>
-  //       <NavLink href="/login" activeStyle={ selectedStyle } tw="lg:ml-12!">Login</NavLink>
-  //       {/* <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/login">Log In</PrimaryLink> */}
-  //       <PrimaryLink css={roundedHeaderButton && tw`rounded-full`}href="/signup">Sign Up</PrimaryLink>
-  //     </NavLinks>
-  //   </li>
-  // </div>
 
   const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
   const collapseBreakpointCss = collapseBreakPointCssMap[collapseBreakpointClass];
