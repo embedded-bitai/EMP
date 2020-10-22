@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { Container, ContentWithPaddingXl } from "../home/misc/Layouts.js";
-import { SectionHeading } from "../home/misc/Headings.js";
-import { PrimaryButton as PrimaryButtonBase } from "../home/misc/Buttons.js";
+import { Container, ContentWithPaddingXl } from "../home/common/Layouts.js";
+import { SectionHeading } from "../home/common/Headings.js";
+import { PrimaryButton as PrimaryButtonBase } from "../home/common/Buttons.js";
 import { ReactComponent as StarIcon } from "../images/star-icon.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "../images/svg-decorator-blob-5.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "../images/svg-decorator-blob-7.svg";
@@ -64,7 +64,7 @@ export default ({
     Starters: [
       {
         imageSrc:
-          "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80",
+          "https://res.kurly.com/images/event/join/201007/pc/img_goods2.jpg",
         title: "Veg Mixer",
         content: "Tomato Salad & Carrot",
         price: "$5.99",

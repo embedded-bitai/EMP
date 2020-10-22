@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "../home/misc/Headings.js";
-import { SectionDescription } from "../home/misc/Typography.js";
-import { Container, ContentWithPaddingXl } from "../home/misc/Layouts.js";
+import { SectionHeading, Subheading as SubheadingBase } from "../home/common/Headings.js";
+import { SectionDescription } from "../home/common/Typography.js";
+import { Container, ContentWithPaddingXl } from "../home/common/Layouts.js";
 import { ReactComponent as ArrowRightIcon } from "../images/arrow-right-icon.svg";
 import SupportIconImage from "../images/support-icon.svg";
 import ShieldIconImage from "../images/shield-icon.svg";

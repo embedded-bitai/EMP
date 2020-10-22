@@ -2,13 +2,13 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "../home/misc/Headings.js";
-import { SectionDescription } from "../home/misc/Typography.js";
-import { PrimaryButton as PrimaryButtonBase } from "../home/misc/Buttons.js";
-import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "../home/misc/Layouts.js";
+import { SectionHeading, Subheading as SubheadingBase } from "../home/common/Headings.js";
+import { SectionDescription } from "../home/common/Typography.js";
+import { PrimaryButton as PrimaryButtonBase } from "../home/common/Buttons.js";
+import { Container as ContainerBase, ContentWithPaddingXl as ContentBase } from "../home/common/Layouts.js";
 import { ReactComponent as CheckboxIcon } from "../images/checkbox-circle.svg";
 
-const Container = tw(ContainerBase)`bg-primary-900 text-gray-100 -mx-8 px-8`;
+const Container = tw(ContainerBase)`bg-yellow-900 text-gray-100 -mx-8 px-8`;
 const ContentWithPaddingXl = tw(
   ContentBase
 )`relative z-10 mx-auto px-0 py-10 sm:px-6 md:px-8 lg:px-12 xl:px-24 sm:py-20 flex flex-col max-w-screen-xl`;
@@ -53,17 +53,17 @@ const PlanFeatures = styled.ul`
   .feature {
     ${tw`flex items-start mt-6 first:mt-0`}
     .icon {
-      ${tw`w-6 h-6 text-primary-500 flex-shrink-0`}
+      ${tw`w-6 h-6 text-yellow-500 flex-shrink-0`}
     }
     .text {
-      ${tw`font-semibold text-primary-900 tracking-wide ml-3`}
+      ${tw`font-semibold text-yellow-900 tracking-wide ml-3`}
     }
   }
 `;
 
 const PlanAction = tw.div`mt-4`;
 const ActionButton = styled(PrimaryButtonBase)`
-  ${tw`block text-center text-sm font-semibold tracking-wider w-full text-gray-100 bg-primary-500 px-6 py-4 rounded hover:bg-primary-700 focus:shadow-outline focus:outline-none transition-colors duration-300`}
+  ${tw`block text-center text-sm font-semibold tracking-wider w-full text-gray-100 bg-yellow-500 px-6 py-4 rounded hover:bg-yellow-700 focus:shadow-outline focus:outline-none transition-colors duration-300`}
 `;
 
 const WhiteBackgroundOverlay = tw.div`absolute inset-x-0 bottom-0 h-1/6 lg:h-1/3 bg-white z-0`;

@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { SectionHeading as HeadingTitle } from "./misc/Headings.js";
+import { SectionHeading as HeadingTitle } from "./common/Headings.js";
 import { ReactComponent as SvgDecoratorBlob1 } from "../images/svg-decorator-blob-1.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "../images/svg-decorator-blob-3.svg";
 
@@ -57,7 +57,7 @@ export default () => {
     <Container>
       <Content>
         <HeadingInfoContainer>
-          <HeadingTitle>Popular Blog Posts</HeadingTitle>
+          <HeadingTitle>베스트 상품</HeadingTitle>
           <HeadingDescription>Some amazing blog posts that are written by even more amazing people.</HeadingDescription>
         </HeadingInfoContainer>
         <ThreeColumn>

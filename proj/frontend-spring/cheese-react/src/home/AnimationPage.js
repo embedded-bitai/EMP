@@ -1,5 +1,8 @@
 import React from "react";
 import tw from "twin.macro";
+
+/* framer-motion and useInView here are used to animate the sections in when we reach them in the viewport
+ */
 import { motion } from "framer-motion";
 import useInView from "use-in-view";
 
@@ -39,7 +42,7 @@ function AnimatedSlideInComponent({ direction = "left", offset = 30, children })
           x: inView && 0
         }
       }}
-      transition={{ type: "spring", damping: 100 }}
+      transition={{ type: "spring", damping: 20 }}
       ref={ref}
     >
       {children}
