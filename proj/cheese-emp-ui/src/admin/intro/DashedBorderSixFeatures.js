@@ -1,9 +1,10 @@
 import React from "react";
-import styled from 'styled-components';
-import tw from 'twin.macro';
+import styled from "styled-components";
+import tw from "twin.macro";
+import axios from "axios"
 //eslint-disable-next-line
 //import { css } from "styled-components/macro";
-import { SectionHeading } from './Headings';
+import { SectionHeading } from "./Headings";
 
 import defaultCardImage from "../../images/shield-icon.svg";
 
@@ -95,9 +96,19 @@ export default () => {
     },
   ];
 
+  const adminAxios = () => {
+    axios.get(`http://localhost:8080/api/admin`)
+      .then (res => {
+        alert(`Admin Connection Success !!`)
+      }).catch(
+        e => alert(`Admim Failure`)
+      )
+  }
+
   return (
     <Container>
       <ThreeColumnContainer>
+        <button onClick={adminAxios}>Admin axois</button>
         <Heading>Our Professional <span tw="text-primary-500">Services</span></Heading>
         {cards.map((card, i) => (
           <Column key={i}>
