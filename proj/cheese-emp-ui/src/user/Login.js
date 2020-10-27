@@ -3,6 +3,7 @@ import React from "react";
 import { Container as ContainerBase } from "../home/common/Layouts";
 import tw from "twin.macro";
 import styled from "styled-components";
+import axios from "axios"
 import {css} from "styled-components/macro"; //eslint-disable-line
 import illustration from "../images/login-illustration.svg";
 // import logo from "../images/logo.svg";
@@ -11,8 +12,6 @@ import twitterIconImageSrc from "../images/twitter-icon.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 
 import Header from "../home/common/Header.js";
-
-// const Header = tw(HeaderBase)`max-w-none`;
 
 const Container = tw(ContainerBase)`min-h-screen bg-yellow-500 text-white font-medium flex justify-center`;
 const Content = tw.div`max-w-screen-xl m-0 sm:mx-20 sm:my-16 bg-white text-gray-900 shadow sm:rounded-lg flex justify-center flex-1`;
@@ -57,6 +56,15 @@ const IllustrationImage = styled.div`
   ${tw`m-12 xl:m-16 w-full max-w-sm bg-contain bg-center bg-no-repeat`}
 `;
 
+const userAxios = () => {
+  axios.get(`http://localhost:8080/api/user`)
+    .then(res => {
+      alert(`Sign In Connection Success !!`)
+    }).catch(
+      e => alert(`Sign In Failure`)
+    )
+}
+
 export default ({
   logoLinkUrl = "/",
   illustrationImageSrc = illustration,
@@ -89,6 +97,7 @@ export default ({
               <LogoImage src={logo} />
             </LogoLink> */}
             <MainContent>
+              <button onClick={userAxios}>SignIn axios</button>
               <Heading>{headingText}</Heading>
               <FormContainer>
                 <SocialButtonsContainer>
