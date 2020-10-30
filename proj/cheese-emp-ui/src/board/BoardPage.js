@@ -11,9 +11,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
+import { css } from "styled-components/macro"; //eslint-disable-line
 
 import Header from "../home/common/Header.js";
 import Footer from "../home/common/Footer.js";
+import {BrowserRouter as Router,Route,Link,Switch} from 'react-router-dom'
+import BoardRegister from "./BoardRegister"
+
+
+const PrimaryAction = tw.button`rounded-full sm:px-4 sm:py-2 font-bold shadow transition duration-300 bg-yellow-500 text-black hocus:bg-yellow-700 hocus:text-gray-200 focus:outline-none focus:shadow-outline`;
 
 const Container = styled.div`
   ${tw`relative -mx-3 px-10 bg-center bg-cover h-screen min-h-144 pt-10 `}`;
@@ -72,7 +78,12 @@ class BoardPage extends Component {
     return (<>
         <Header />
         <Container>
-            <button onClick={fnqAxios}>Fnq axios</button>
+            {/* <button onClick={fnqAxios}>Fnq axios(검색어 입력창)</button> */}
+           <Router>
+           <Route path="/boardregister" component={BoardRegister}/>
+           </Router>
+            <PrimaryAction  margin="10em" href="/boardregister">검색</PrimaryAction>
+            <PrimaryAction  margin="10em" href="/boardregister">게시글 작성</PrimaryAction>
             <Paper className={classes.root}>
                 <Table className={classes.table}>
                     <TableHead>
