@@ -82,7 +82,7 @@ export default () => {
             <LinkListItem>
               <Link href="#">Log In</Link>
             </LinkListItem>
-            <LinkListItem>
+            {/* <LinkListItem>
               <Link href="#">Personal</Link>
             </LinkListItem>
             <LinkListItem>
@@ -90,7 +90,7 @@ export default () => {
             </LinkListItem>
             <LinkListItem>
               <Link href="#">Team</Link>
-            </LinkListItem>
+            </LinkListItem> */}
           </LinkList>
         </Column>
         <Column>
