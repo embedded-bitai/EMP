@@ -15,8 +15,18 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 
 import Header from "../home/common/Header.js";
 import Footer from "../home/common/Footer.js";
-import {BrowserRouter as Router,Route,Link,Switch} from 'react-router-dom'
-import BoardRegister from "./BoardRegister"
+export const NavLink = tw.a`
+  text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
+  font-semibold tracking-wide transition duration-300
+  pb-1 border-b-2 border-transparent hover:border-yellow-500 hocus:text-yellow-500
+`;
+
+export const PrimaryLink = tw(NavLink)`
+  lg:mx-0
+  px-8 py-3 rounded bg-yellow-500 text-black
+  hocus:bg-yellow-700 hocus:text-gray-200 focus:shadow-outline
+  border-b-0
+`;
 
 
 const PrimaryAction = tw.button`rounded-full sm:px-4 sm:py-2 font-bold shadow transition duration-300 bg-yellow-500 text-black hocus:bg-yellow-700 hocus:text-gray-200 focus:outline-none focus:shadow-outline`;
@@ -79,11 +89,8 @@ class BoardPage extends Component {
         <Header />
         <Container>
             {/* <button onClick={fnqAxios}>Fnq axios(검색어 입력창)</button> */}
-           <Router>
-           <Route path="/boardregister" component={BoardRegister}/>
-           </Router>
-            <PrimaryAction  margin="10em" href="/boardregister">검색</PrimaryAction>
-            <PrimaryAction  margin="10em" href="/boardregister">게시글 작성</PrimaryAction>
+            <PrimaryLink  margin="10em" href="/boardregister">검색</PrimaryLink>
+            <PrimaryLink  margin="10em" href="/boardregister">게시글 작성</PrimaryLink>
             <Paper className={classes.root}>
                 <Table className={classes.table}>
                     <TableHead>

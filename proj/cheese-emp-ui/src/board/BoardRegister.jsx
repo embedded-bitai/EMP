@@ -1,5 +1,8 @@
 import React, {useState} from 'react'
 import axios from 'axios'
+import '../styles/table.style.css'
+
+
 
 const UserRegister = () => {
     const [userid, setUserid] = useState()
@@ -29,32 +32,35 @@ const UserRegister = () => {
         <h1>UserRegister</h1><form>
         <table className='tab_layer'>
             
-                <tr>
-                    <td>ID</td>
-                    <td><input type="text" onChange={e => setUserid(e.target.value)}/></td>
+                
+                <tr className='tab_layer'>
+                    <td className='tab_layer'>ID</td>
+                    <td className='tab_layer'><input type="text" onChange={e => setUserid(e.target.value)}/></td>
                 </tr>
-                <tr>
-                    <td>PASSWORD</td>
+                
+
+                <tr className='tab_layer'> 
+                    <td className='tab_layer'>PASSWORD</td>
                     <td><input type="text" onChange={e => setPassword(e.target.value)}/></td>
                 </tr>
-                <tr>
-                    <td>NAME</td>
-                    <td><input type="text" onChange={e => setName(e.target.value)}/></td>
+                <tr className='tab_layer'>
+                    <td className='tab_layer'>NAME</td>
+                    <td className='tab_layer'><input type="text" onChange={e => setName(e.target.value)}/></td>
                 </tr>
-                <tr>
-                    <td>PCLASS</td>
+                <tr className='tab_layer'>
+                    <td className='tab_layer'>PCLASS</td>
                     <td><input type="text" onChange={e => setPclass(e.target.value)}/></td>
                 </tr>
-                <tr>
-                    <td>GENDER</td>
+                <tr className='tab_layer'>
+                    <td className='tab_layer'>GENDER</td>
                     <td><input type="text" onChange={e => setGender(e.target.value)}/></td>
                 </tr>
-                <tr>
-                    <td>BIRTH YEAR</td>
+                <tr className='tab_layer'>
+                    <td className='tab_layer'>BIRTH YEAR</td>
                     <td><input type="text" onChange={e => setBirthYear(e.target.value)}/></td>
                 </tr>
-                <tr>
-                    <td>EMBARKED</td>
+                <tr className='tab_layer'>
+                    <td className='tab_layer'>EMBARKED</td>
                     <td><input type="text" onChange={e => setEmbarked(e.target.value)}/></td>
                 </tr>
                 {/* <tr>
