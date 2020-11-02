@@ -116,14 +116,10 @@ export default ({
                 <Form>
                   <Input type="email" placeholder="Email" />
                   <Input type="password" placeholder="Password" />
-                  {/* <SubmitButton type="submit">
+                  <SubmitButton type="submit">
                     <SubmitButtonIcon className="icon" />
                     <span className="text">{submitButtonText}</span>
-                  </SubmitButton> */}
-                  <SubmitButton type="submit" onClick={userAxios}>
-                    <SubmitButtonIcon className="icon" />
-                    <span className="text">{submitButtonText}</span>
-                  </SubmitButton>                  
+                  </SubmitButton>
                 </Form>
                 <p tw="mt-6 text-xs text-gray-600 text-center">
                   <a href={forgotPasswordUrl} tw="border-b border-gray-500 border-dotted">
