@@ -11,9 +11,25 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
+import { css } from "styled-components/macro"; //eslint-disable-line
 
 import Header from "../home/common/Header.js";
 import Footer from "../home/common/Footer.js";
+export const NavLink = tw.a`
+  text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
+  font-semibold tracking-wide transition duration-300
+  pb-1 border-b-2 border-transparent hover:border-yellow-500 hocus:text-yellow-500
+`;
+
+export const PrimaryLink = tw(NavLink)`
+  lg:mx-0
+  px-8 py-3 rounded bg-yellow-500 text-black
+  hocus:bg-yellow-700 hocus:text-gray-200 focus:shadow-outline
+  border-b-0
+`;
+
+
+const PrimaryAction = tw.button`rounded-full sm:px-4 sm:py-2 font-bold shadow transition duration-300 bg-yellow-500 text-black hocus:bg-yellow-700 hocus:text-gray-200 focus:outline-none focus:shadow-outline`;
 
 const Container = styled.div`
   ${tw`relative -mx-3 px-10 bg-center bg-cover h-screen min-h-144 pt-10 `}`;
@@ -72,7 +88,9 @@ class BoardPage extends Component {
     return (<>
         <Header />
         <Container>
-            <button onClick={fnqAxios}>Fnq axios</button>
+            {/* <button onClick={fnqAxios}>Fnq axios(검색어 입력창)</button> */}
+            <PrimaryLink  margin="10em" href="/boardregister">검색</PrimaryLink>
+            <PrimaryLink  margin="10em" href="/boardregister">게시글 작성</PrimaryLink>
             <Paper className={classes.root}>
                 <Table className={classes.table}>
                     <TableHead>
