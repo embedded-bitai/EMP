@@ -1,17 +1,31 @@
-from com_emp_api.ext.db import db, openSession
-from com_emp_api.cheese.service import cheeseService
+from com_cheese_api.ext.db import db, openSession
+from com_cheese_api.util.file import FileReader
 import pandas as pd
 import json
-from com_emp_api.ext.db import db
+from com_cheese_api.ext.db import db
 from flask import Response, jsonify
 from flask_restful import Resource, reqparse
+from sklearn.ensemble import RandomForestClassifier 
 from wordcloud import WordCloud
 import pandas as pd
 from collections import Counter
+import os
 
+'''
+ * @ Module Name : cheese.py 
+ * @ Description : Recommendation for cheese product
+ * @ since 2020.10.20
+ * @ version 1.0
+ * @ label : 'category'
+ * @ 치즈 상품 추천 개발 김유정
+ * @ special reference libraries
+ *     finance_datareader, konlpy
+ * @ 수정일         수정자                   수정내용
+ *  -------    --------    ---------------------------
+ *  2020.10.20    김유정          최초 생성
+''' 
 
-
-
+# 1. 데이터 추출 KDD의 목표는 csv로 만드는 것
 # ==============================================================
 # ====================                     =====================
 # ====================         KDD         =====================
@@ -20,45 +34,136 @@ from collections import Counter
 class CheeseKdd(db.Model):
     ...
 
+# 2. 전처리 (Df로 전환) -> processing에 결과는 DF
 # ==============================================================
 # =====================                  =======================
 # =====================    Preprocessing =======================
 # =====================                  =======================
 # ==============================================================
 
-class CheeseWordCloud():
-    cheese_list = pd.read_csv('cheese_data.csv', encoding ='utf-8')
-    cheese_list     
-    text = ""
-    with open("./cheese_data.txt", "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        for line in lines:
-                text += line
 
-    font_path = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
+class CheeseDf(object):
+    def __init__(self):
+        self.fileReader = FileReader()
+        self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'\\data')
+        self.odf = None
 
-    wc = WordCloud(font_path=font_path, background_color="white", width=1000, height=700)
-    wc.generate(text)
-    wc.to_file("result.png")
-    plt.imshow(wc)
-    plt.show
+    def new_model(self):
+        train = 'train.csv'
+        test = 'test.csv'
+        this = self.fileReader
+        this.train = self.new_model(train) #payload
+        this.test = self.new_model(test)   #payload
+        
+        # train = pd.read_csv("data/train.csv")
+        # test = pd.read_csv("data/test.csv")
 
-class CheeseSplit():
-    cheese_data = pd.read_csv('cheese_data.csv', encoding ='utf-8')
-        name = cheese_data['name'].str.split(']')
-        cheese_list['brand'] = name.str.get(0)
-        cheese_data['name'] = name.str.get(1)
-        split = cheese_data['brand'].str.split('[')
-        cheese_data['brand'] = split.str.get(1)
-            cheese_data.to_csv("cheese_list.csv")
+        # print("The train dat size : {}".format(train.shape))
+        # print("The test data size : {}".format(test.shape))
 
+    '''
+    Original Model Generation
+    '''
+    self.odf = pd.DataFrame(
+        {
+            'cheese_id' : this.train.CheeseId,
+            'ranking' : this.train.Ranking,
+            'brand' : this.train.Brand,
+            'name' : this.train.Name,
+            # 'matching' : this.train.matching,
+            'category' : this.train.Category,
+            'price' : this. train.Price,
+            'content' : this.train.Content,
+            'img' : this.train.Img
+        }
+    )
+
+    this.id = this.test['CheeseId']
+    # print(f'Preprocessing Train Variable : {this.train.columns}')
+    # print(f'Preprocessing Test Variable : {this.test.columns}')    
+    this = self.drop_feature(this, 'Country')
+    this = self.drop_feature(this, 'Price')
+    this = self.drop_feature(this, 'Content')
+    this = self.drop_feature(this, 'Img')
+    this = self.drop_feature(this, 'CheeseId')
+    # print(f'Post-Drop Variable : {this.train.columns}')   
+
+    this = self.ranking_ordinal(this)
+    # print(f' Preprocessing Ranking Variable: {this.train.head()}')
+    this = self.brand_norminal(this)
+    # print(f' Preprocessing Brand Variable: {this.train.head()}')
+    this = self.name_norminal(this)
+    # print(f'Preprocessing Name Variable: {this.train.head()}')
+    # this = self.matching_norminal(this)
+    # print(f' Preprocessing Matching Variable: {this.train.head()}')
+    this = self.texture_norminal(this)
+    # print(f' Preprocessing Texture Variable: {this.train.head()}')
+    this = self.types_norminal(this)
+    # print(f'Preprocessing Types Variable: {this.train.head()}')
+    this = self.category_norminal(this)
+    #print(f' Preprocessing Category Variable" {this.train.head()}')
+
+    # print(f'Preprocessing Train Result: {this.train.head()}')
+    # print(f'Preprocessing Test Result: {this.test.head()}')
+    # print(f'Train NA Check: {this.train.isnull().sum()}')
+    # print(f'Test NA Check: {this.test.isnull().sum()}')    
+
+    this.label = self.create_label(this) # payload
+    this.train = self.create_train(this) # payload
+
+    # print(f'Train Variable: {this.train.columns}')
+    # print(f'Test Varibale: {this.test.columns}')
+    clf = RandomForestClassifier()
+    clf.fit(this.train, this.label)
+    prediction = clf.predict(this.test)
+
+    df = pd.DataFrame(
+
+        {
+            ''
+        }
+
+    )
+
+
+
+    def word_cloud(self) : 
+    # cheese_list = pd.read_csv('cheese_data.csv', encoding ='utf-8') 
+    
+        text = ""
+        with open("./cheese_data.txt", "r", encoding="utf-8") as f:
+            lines = f.readlines()
+            for line in lines:
+                    text += line
+
+        font_path = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
+
+        wc = WordCloud(font_path=font_path, background_color="white", width=1000, height=700)
+        wc.generate(text)
+        wc.to_file("result.png")
+        plt.imshow(wc)
+        plt.show
+
+        return wc
+
+        
+    def  cheese_brand_split(self):
+        cheese_data = pd.read_csv('cheese_data.csv', encoding ='utf-8')
+            name = cheese_data['name'].str.split(']')
+            cheese_list['brand'] = name.str.get(0)
+            cheese_data['name'] = name.str.get(1)
+            split = cheese_data['brand'].str.split('[')
+            cheese_data['brand'] = split.str.get(1)
+                cheese_data.to_csv("cheese_list.csv")
+
+# 3. 모델링 (Dto)
 # ==============================================================
 # =======================                =======================
 # =======================    Modeling    =======================
 # =======================                =======================
 # ==============================================================
 
-class cheeseDto(db.Model):
+class CheeseDto(db.Model):
     __tablename__='cheeses'
     __table_args__={'mysql_collate':'utf8_general_ci'}
 
@@ -139,14 +244,17 @@ class cheeseDao(cheeseDto):
     def find_by_content(cls, content) :
         return cls.query.firter_by(content == content).first() 
 
+# Json 형태로 쓰기 위해 씀!
 class CheeseVo(db.Model):
     ...
+# 텐서플로우가 걸리는 곳    
 class CheeseTf(db.Model):
     ...
-
+# 인공지능 판단해주는 곳
 class CheeseAi(db.Model):
     ...
 
+# 4. 프론트에 데이터 보내주는 행위 (프론트에서 이 내용이 보임!!)
 # ==============================================================
 # =====================                  =======================
 # =====================    Resourcing    =======================
@@ -156,48 +264,3 @@ class CheeseAi(db.Model):
 # Resource 부분은 어떤걸 상속 받냐에 따라 달라짐
 class Cheese(Resource):
     ...
-
- # # ==============================================================
-# # ====================                     =====================
-# # ====================         KDD         =====================
-# # ====================                     =====================
-# # ==============================================================
-# class UserKdd(db.Model):
-#     ...
-
-# # ==============================================================
-# # =====================                  =======================
-# # =====================    Preprocessing =======================
-# # =====================                  =======================
-# # ==============================================================
-
-# class UserDf():
-#     ...
-
-# # ==============================================================
-# # =======================                =======================
-# # =======================    Modeling    =======================
-# # =======================                =======================
-# # ==============================================================
-
-# class UserDto(db.Model):
-#     ...
-
-# class UserVo(db.Model):
-#     ...
-
-# class UserTf(db.Model):
-#     ...
-
-# class UserAi(db.Model):
-#     ...
-
-# # ==============================================================
-# # =====================                  =======================
-# # =====================    Resourcing    =======================
-# # =====================                  =======================
-# # ==============================================================
-
-
-# class User(db.Model):
-#     ...   
