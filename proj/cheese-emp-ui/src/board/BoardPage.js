@@ -15,8 +15,6 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 
 import Header from "../home/common/Header.js";
 import Footer from "../home/common/Footer.js";
-import {BrowserRouter as Router,Route,Link,Switch} from 'react-router-dom'
-import BoardRegister from "./BoardRegister"
 
 export const NavLink = tw.a`
   text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
@@ -30,6 +28,7 @@ export const PrimaryLink = tw(NavLink)`
   hocus:bg-yellow-700 hocus:text-gray-200 focus:shadow-outline
   border-b-0
 `;
+
 
 const Container = styled.div`
   ${tw`relative -mx-3 px-10 bg-center bg-cover h-screen min-h-144 pt-10 `}`;
@@ -89,7 +88,8 @@ class BoardPage extends Component {
         <Header />
         <Container>
             {/* <button onClick={fnqAxios}>Fnq axios(검색어 입력창)</button> */}
-            <PrimaryLink margin="10em" href="/boardregister">검색</PrimaryLink>
+
+            <PrimaryLink  margin="10em" href="/boardregister">검색</PrimaryLink>
             <PrimaryLink  margin="10em" href="/boardregister">게시글 작성</PrimaryLink>
             <Paper className={classes.root}>
                 <Table className={classes.table}>
