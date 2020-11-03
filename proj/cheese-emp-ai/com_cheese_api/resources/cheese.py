@@ -1,19 +1,19 @@
-from com_cheese_api.ext.db import db, openSession
-from com_cheese_api.util.file import FileReader
+# from com_cheese_api.ext.db import db, openSession
+# from com_cheese_api.ext.db import db
+# from com_cheese_api.util.file import FileReader
 import pandas as pd
 import json
-from com_cheese_api.ext.db import db
 from flask import Response, jsonify
 from flask_restful import Resource, reqparse
 from sklearn.ensemble import RandomForestClassifier 
 
-from selenium import webdriver
+# from selenium import webdriver
 import csv, time
 
 from sklearn.model_selection import train_test_split
 
-from wordcloud import WordCloud
-from collections import Counter
+# from wordcloud import WordCloud
+# from collections import Counter
 import os
 
 '''
@@ -36,28 +36,28 @@ import os
 # ====================         KDD         =====================
 # ====================                     =====================
 # ==============================================================
-class CheeseKdd(db.Model):
+# class CheeseKdd():
 
-    def cheese_Crawling(html):
-        item_list = []
-        item_dict = {}
-        items = driver.find_elements_by_class_name('item')
-        itemNum = 1
-        for item in items:
-            itemNum += 1
-            title = item.find_element_by_class_name('name').text
-            price = item.find_element_by_class_name('price').text
-            info = item.find_element_by_class_name('desc').text
-            src = item.find_element_by_css_selector('a.img>img').get_attribute('src')
-            item_list.append([title, price, info, src])
-            item_dict[str(itemNum)] = {'title':title, 'price':price, 'info':info, 'img':src}
-        return item_list, item_dict
-    def toCSV(cheese_list):
-        file = open('cheese_kurly.csv', 'w', encoding='utf-8', newline='')
-        csvfile = csv.writer(file)
-        for row in cheese_list :
-            csvfile.writerow(row)
-        file.close()
+def cheese_Crawling(html):
+    item_list = []
+    item_dict = {}
+    items = driver.find_elements_by_class_name('item')
+    itemNum = 1
+    for item in items:
+        itemNum += 1
+        title = item.find_element_by_class_name('name').text
+        price = item.find_element_by_class_name('price').text
+        info = item.find_element_by_class_name('desc').text
+        src = item.find_element_by_css_selector('a.img>img').get_attribute('src')
+        item_list.append([title, price, info, src])
+        item_dict[str(itemNum)] = {'title':title, 'price':price, 'info':info, 'img':src}
+    return item_list, item_dict
+def toCSV(cheese_list):
+    file = open('cheese_kurly.csv', 'w', encoding='utf-8', newline='')
+    csvfile = csv.writer(file)
+    for row in cheese_list :
+        csvfile.writerow(row)
+    file.close()
     cheese_list = []
     cheese_dict = {}
     url = "https://www.kurly.com/shop/goods/goods_search.php?searched=Y&log=1&skey=all&hid_pr_text=&hid_link_url=&edit=Y&sword=%C4%A1%C1%EE&x=0&y=0"
@@ -94,25 +94,25 @@ class CheeseKdd(db.Model):
 # =====================                  =======================
 # ==============================================================
 
-class CheeseDf(object):
-    def __init__(self):
-        self.fileReader = FileReader()
-        self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'\\data')
-        self.odf = None
-    
-    # hook 하는 부분 : 순서를 정해줌
-    def new_model(self):
-        train = 'train.csv'
-        test = 'test.csv'
-        this = self.fileReader
-        this.train = self.new_model(train) #payload
-        this.test = self.new_model(test)   #payload
-        
-        # train = pd.read_csv("data/train.csv")
-        # test = pd.read_csv("data/test.csv")
+# class CheeseDf(object):
+def __init__(self):
+    self.fileReader = FileReader()
+    self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'\\data')
+    self.odf = None
 
-        # print("The train dat size : {}".format(train.shape))
-        # print("The test data size : {}".format(test.shape))
+# hook 하는 부분 : 순서를 정해줌
+def new_model(self):
+    train = 'train.csv'
+    test = 'test.csv'
+    this = self.fileReader
+    this.train = self.new_model(train) #payload
+    this.test = self.new_model(test)   #payload
+    
+    # train = pd.read_csv("data/train.csv")
+    # test = pd.read_csv("data/test.csv")
+
+    # print("The train dat size : {}".format(train.shape))
+    # print("The test data size : {}".format(test.shape))
 
     '''
     Original Model Generation
@@ -181,90 +181,103 @@ class CheeseDf(object):
     # print(self.odf)
     # print(df)
     sumdf = pd.concat([self.odf, df], axis=1)
-    return sumdf
 
-    def new_model(self, payload) -> object:
-        this = self.fileReader
-        this.data = self.data
-        this.fname = payload
-        print(f'{self.data}')
-        print(f'self.fname')
-        return
-        
-    @staticmethod
-    def create_train(this) -> object:
-        return this.train.drop('Category', axis = 1)
 
-    @staticmethod
-    def create_label(this) -> object:
-        this.train = this.train.drop([feature], axis = 1)
-        this.test = this.test.drop([feature], axis = 1)
+def new_model(self, payload) -> object:
+    this = self.fileReader
+    this.data = self.data
+    this.fname = payload
+    print(f'{self.data}')
+    print(f'self.fname')
+    return this
     
-    @staticmethod
-    def ranking_ordinal(this) -> object:
-        return this
+@staticmethod
+def create_train(this) -> object:
+    return this.train.drop('Category', axis = 1)
 
-    @staticmethod
-    def texture_norminal(this) -> object:
-        train = this.train
-        test = this.test
-        train['']
+@staticmethod
+def create_label(this) -> object:
+    this.train = this.train.drop([feature], axis = 1)
+    this.test = this.test.drop([feature], axis = 1)
 
-    @staticmethod
-    def types_norminal(this) -> object:
-        combine = [this.train, this.test]
-        types_mapping = {'가공치즈':0, '자연치즈':1}
-        for dataset in combine:
-            dataset ['types'] = dataset['types'].map(type.mapping)
-        this.train = this.train 
-        this.test = this.test 
+@staticmethod
+def ranking_ordinal(this) -> object:
+    return this
+
+@staticmethod
+def texture_norminal(this) -> object:
+    train = this.train
+    test = this.test
+    train['']
+
+@staticmethod
+def types_norminal(this) -> object:
+    combine = [this.train, this.test]
+    types_mapping = {'가공치즈':0, '자연치즈':1}
+    for dataset in combine:
+        dataset ['types'] = dataset['types'].map(type.mapping)
+    this.train = this.train 
+    this.test = this.test 
+
     
-        
-    def word_cloud(self) : 
-    # cheese_list = pd.read_csv('cheese_data.csv', encoding ='utf-8') 
+def word_cloud(self) : 
+# cheese_list = pd.read_csv('cheese_data.csv', encoding ='utf-8') 
 
-        text = ""
-        with open("./cheese_data.txt", "r", encoding="utf-8") as f:
-            lines = f.readlines()
-            for line in lines:
-                    text += line
+    text = ""
+    with open("./cheese_data.txt", "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        for line in lines:
+                text += line
 
-        font_path = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
+    font_path = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
 
-        wc = WordCloud(font_path=font_path, background_color="white", width=1000, height=700)
-        wc.generate(text)
-        wc.to_file("result.png")
-        plt.imshow(wc)
-        plt.show
+    wc = WordCloud(font_path=font_path, background_color="white", width=1000, height=700)
+    wc.generate(text)
+    wc.to_file("result.png")
+    plt.imshow(wc)
+    plt.show
 
-        return wc
+    return wc
 
-        
-    def  cheese_brand_split(self):
-        cheese_data = pd.read_csv('com_cheese_api/resources/data', encoding ='utf-8')
-        name = cheese_data['name'].str.split(']')
-        cheese_list['brand'] = name.str.get(0)
-        cheese_data['name'] = name.str.get(1)
-        split = cheese_data['brand'].str.split('[')
-        cheese_data['brand'] = split.str.get(1)
-        cheese_data.to_csv("cheese_list.csv")
+    
+def  cheese_brand_split(self):
+    cheese_data = pd.read_csv('com_cheese_api/resources/data', encoding ='utf-8')
+    name = cheese_data['name'].str.split(']')
+    cheese_list['brand'] = name.str.get(0)
+    cheese_data['name'] = name.str.get(1)
+    split = cheese_data['brand'].str.split('[')
+    cheese_data['brand'] = split.str.get(1)
+    cheese_data.to_csv("cheese_list.csv")
 
-    def df_split(self):
-        feats = pd.read_csv("data/cheese_data.csv", index_col = 0)
-        test_size = 0.2
-        random_state = 42
+def df_split(self):
+    feats = pd.read_csv("data/cheese_data.csv", index_col = 0)
+    test_size = 0.2
+    random_state = 42
 
-        X_train, X_test = train_test_split(
-            feats,
-            test_size = test_size,
-            random_state = random_state
-        )
+    X_train, X_test = train_test_split(
+        feats,
+        test_size = test_size,
+        random_state = random_state
+    )
 
-        print(f'Shape of X_train: {X_train.shape}')
+    print(f'Shape of X_train: {X_train.shape}')
 
-        X_train.to_csv(os.path.join('data', 'cheese_train.csv'), index=False)
-        X_test.to_csv(os.path.join('data', 'cheese_test.csv'), index=False)            
+    X_train.to_csv(os.path.join('data', 'cheese_train.csv'), index=False)
+    X_test.to_csv(os.path.join('data', 'cheese_test.csv'), index=False)
 
+def cheese_data():
+    feats = pd.read_csv("data/cheese_data.csv", index_col = 0)   
+    print(feats)
+    print(list(feats))
+    return feats
+
+cheese_data()    
+ 
+    # if __name__ == '__main__':
+    
+        # c = CheeseDf()
+        # c.cheese_data()   
+    
 
 # 3. 모델링 (Dto)
 # ==============================================================
@@ -273,104 +286,104 @@ class CheeseDf(object):
 # =======================                =======================
 # ==============================================================
 
-class CheeseDto(db.Model):
-    __tablename__='cheeses'
-    __table_args__={'mysql_collate':'utf8_general_ci'}
+# class CheeseDto(db.Model):
+#     __tablename__='cheeses'
+#     __table_args__={'mysql_collate':'utf8_general_ci'}
 
-    cheeseid : int = db.Column(db.Integer, primary_key=True, index=True)
-    name : str = db.Column(db.String(30))
-    price : str = db.Column(db.String(30))
-    types : str = db.Column(db.String(30))
-    texture : str = db.Column(db.String(30))
-    taste : str = db.Column(db.String(30))
-    matching : str = db.Column(db.String(30))
-    content : str = db. Column(db.String(30))
+#     cheeseid : int = db.Column(db.Integer, primary_key=True, index=True)
+#     name : str = db.Column(db.String(30))
+#     price : str = db.Column(db.String(30))
+#     types : str = db.Column(db.String(30))
+#     texture : str = db.Column(db.String(30))
+#     taste : str = db.Column(db.String(30))
+#     matching : str = db.Column(db.String(30))
+#     content : str = db. Column(db.String(30))
 
-    #dairy = db.relationship('DiaryDto', lazy='dynamic')
-    orders = db.relationship('OrderDto', back_populates='cheese', lazy='dynamic')
-    prices = db.relationship('PriceDto', back_populates='cheese', lazy='dynamic')
+#     #dairy = db.relationship('DiaryDto', lazy='dynamic')
+#     orders = db.relationship('OrderDto', back_populates='cheese', lazy='dynamic')
+#     prices = db.relationship('PriceDto', back_populates='cheese', lazy='dynamic')
 
-    def __init__(self, cheeseid, name, price, types, texture, taste, matching, content) : 
-        self.id = cheeseid
-        self.name = name
-        self.price = price
-        self.types = types
-        self.texture = texture
-        self.taste = taste
-        self.matching = matching
-        self.content = content
+#     def __init__(self, cheeseid, name, price, types, texture, taste, matching, content) : 
+#         self.id = cheeseid
+#         self.name = name
+#         self.price = price
+#         self.types = types
+#         self.texture = texture
+#         self.taste = taste
+#         self.matching = matching
+#         self.content = content
 
-    def __repr__(self):
-        return f'cheese(cheeseid={self.cheeseid}, name={self.name}, price={self.price}, types={self.types}, texture={self.texture}, taste={self.taste}, matching={self.matching}, content={self.content})'
+#     def __repr__(self):
+#         return f'cheese(cheeseid={self.cheeseid}, name={self.name}, price={self.price}, types={self.types}, texture={self.texture}, taste={self.taste}, matching={self.matching}, content={self.content})'
 
-    @property
-    def json(self):
-        return {'cheeseid':self.cheeseid, 'name':self.name, 'price':self.price, 'types':self.types, 'texture':self.types, 'taste':self.types, 'matching':self.types, 'content':self.content}
+#     @property
+#     def json(self):
+#         return {'cheeseid':self.cheeseid, 'name':self.name, 'price':self.price, 'types':self.types, 'texture':self.types, 'taste':self.types, 'matching':self.types, 'content':self.content}
 
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
+#     def save(self):
+#         db.session.add(self)
+#         db.session.commit()
 
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()   
+#     def delete(self):
+#         db.session.delete(self)
+#         db.session.commit()   
 
-# getter setter를 프론트 단에서 받아옴 
-class cheeseDao(cheeseDto):
+# # getter setter를 프론트 단에서 받아옴 
+# class cheeseDao(cheeseDto):
     
-    @classmethod
-    def find_all(cls):
-        sql = cls.query.all()
+#     @classmethod
+#     def find_all(cls):
+#         sql = cls.query.all()
 
-    @classmethod
-    def find_by_cheeseid(cls, cheeseid) :
-        return cls.query.file_by(cheeseid == cheeseid).all()
+#     @classmethod
+#     def find_by_cheeseid(cls, cheeseid) :
+#         return cls.query.file_by(cheeseid == cheeseid).all()
 
-    @classmethod
-    def find_by_brand(cls, brand) :
-        return cls.query.firter_by(brand == brand).all()         
+#     @classmethod
+#     def find_by_brand(cls, brand) :
+#         return cls.query.firter_by(brand == brand).all()         
     
-    @classmethod
-    def find_by_name(cls, name) :
-        return cls.query.firter_by(name == name).all()              
+#     @classmethod
+#     def find_by_name(cls, name) :
+#         return cls.query.firter_by(name == name).all()              
 
-    @classmethod
-    def find_by_price(cls, price) :
-        return cls.query.file_by(price == price).first()
+#     @classmethod
+#     def find_by_price(cls, price) :
+#         return cls.query.file_by(price == price).first()
     
-    @classmethod
-    def find_by_texture(cls, texture) :
-        return cls.query.firter_by(texture == texture).first()  
+#     @classmethod
+#     def find_by_texture(cls, texture) :
+#         return cls.query.firter_by(texture == texture).first()  
 
-    @classmethod
-    def find_by_taste(cls, taste) :
-        return cls.query.file_by(taste == taste).first()
+#     @classmethod
+#     def find_by_taste(cls, taste) :
+#         return cls.query.file_by(taste == taste).first()
     
-    @classmethod
-    def find_by_matching(cls, matching) :
-        return cls.query.firter_by(matching == matching).first()             
+#     @classmethod
+#     def find_by_matching(cls, matching) :
+#         return cls.query.firter_by(matching == matching).first()             
 
-    @classmethod
-    def find_by_content(cls, content) :
-        return cls.query.firter_by(content == content).first() 
+#     @classmethod
+#     def find_by_content(cls, content) :
+#         return cls.query.firter_by(content == content).first() 
 
-# Json 형태로 쓰기 위해 씀!
-class CheeseVo(db.Model):
-    ...
-# 텐서플로우가 걸리는 곳    
-class CheeseTf(db.Model):
-    ...
-# 인공지능 판단해주는 곳
-class CheeseAi(db.Model):
-    ...
+# # Json 형태로 쓰기 위해 씀!
+# class CheeseVo(db.Model):
+#     ...
+# # 텐서플로우가 걸리는 곳    
+# class CheeseTf(db.Model):
+#     ...
+# # 인공지능 판단해주는 곳
+# class CheeseAi(db.Model):
+#     ...
 
-# 4. 프론트에 데이터 보내주는 행위 (프론트에서 이 내용이 보임!!)
-# ==============================================================
-# =====================                  =======================
-# =====================    Resourcing    =======================
-# =====================                  =======================
-# ==============================================================
+# # 4. 프론트에 데이터 보내주는 행위 (프론트에서 이 내용이 보임!!)
+# # ==============================================================
+# # =====================                  =======================
+# # =====================    Resourcing    =======================
+# # =====================                  =======================
+# # ==============================================================
 
-# Resource 부분은 어떤걸 상속 받냐에 따라 달라짐
-class Cheese(Resource):
-    ...
+# # Resource 부분은 어떤걸 상속 받냐에 따라 달라짐
+# class Cheese(Resource):
+#     ...
