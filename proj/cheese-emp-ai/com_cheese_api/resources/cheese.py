@@ -6,8 +6,10 @@ from com_cheese_api.ext.db import db
 from flask import Response, jsonify
 from flask_restful import Resource, reqparse
 from sklearn.ensemble import RandomForestClassifier 
+
+from sklearn.model_selection import train_test_split
+
 from wordcloud import WordCloud
-import pandas as pd
 from collections import Counter
 import os
 
@@ -47,7 +49,8 @@ class CheeseDf(object):
         self.fileReader = FileReader()
         self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'\\data')
         self.odf = None
-
+    
+    # hook 하는 부분 : 순서를 정해줌
     def new_model(self):
         train = 'train.csv'
         test = 'test.csv'
@@ -70,11 +73,6 @@ class CheeseDf(object):
             'ranking' : this.train.Ranking,
             'brand' : this.train.Brand,
             'name' : this.train.Name,
-            # 'matching' : this.train.matching,
-            'category' : this.train.Category,
-            'price' : this. train.Price,
-            'content' : this.train.Content,
-            'img' : this.train.Img
         }
     )
 
@@ -117,19 +115,64 @@ class CheeseDf(object):
     clf.fit(this.train, this.label)
     prediction = clf.predict(this.test)
 
+    # print(this)
     df = pd.DataFrame(
 
         {
-            ''
+            # 'matching' : this.train.matching,
+            'category' : this.train.Category,
+            'price' : this. train.Price,
+            'content' : this.train.Content,
+            'img' : this.train.Img            
         }
 
     )
 
+    # print(self.odf)
+    # print(df)
+    sumdf = pd.concat([self.odf, df], axis=1)
+    return sumdf
 
+    def new_model(self, payload) -> object:
+        this = self.fileReader
+        this.data = self.data
+        this.fname = payload
+        print(f'{self.data}')
+        print(f'self.fname')
+        return
+        
+    @staticmethod
+    def create_train(this) -> object:
+        return this.train.drop('Category', axis = 1)
 
+    @staticmethod
+    def create_label(this) -> object:
+        this.train = this.train.drop([feature], axis = 1)
+        this.test = this.test.drop([feature], axis = 1)
+    
+    @staticmethod
+    def ranking_ordinal(this) -> object:
+        return this
+
+    @staticmethod
+    def texture_norminal(this) -> object:
+        train = this.train
+        test = this.test
+        train['']
+
+    @staticmethod
+    def types_norminal(this) -> object:
+        combine = [this.train, this.test]
+        types_mapping = {'가공치즈':0, '자연치즈':1}
+        for dataset in combine:
+            dataset ['types'] = dataset['types'].map(type.mapping)
+        this.train = this.train 
+        this.test = this.test 
+    
+        
     def word_cloud(self) : 
     # cheese_list = pd.read_csv('cheese_data.csv', encoding ='utf-8') 
-    
+
         text = ""
         with open("./cheese_data.txt", "r", encoding="utf-8") as f:
             lines = f.readlines()
@@ -148,13 +191,30 @@ class CheeseDf(object):
 
         
     def  cheese_brand_split(self):
-        cheese_data = pd.read_csv('cheese_data.csv', encoding ='utf-8')
-            name = cheese_data['name'].str.split(']')
-            cheese_list['brand'] = name.str.get(0)
-            cheese_data['name'] = name.str.get(1)
-            split = cheese_data['brand'].str.split('[')
-            cheese_data['brand'] = split.str.get(1)
-                cheese_data.to_csv("cheese_list.csv")
+        cheese_data = pd.read_csv('com_cheese_api/resources/data', encoding ='utf-8')
+        name = cheese_data['name'].str.split(']')
+        cheese_list['brand'] = name.str.get(0)
+        cheese_data['name'] = name.str.get(1)
+        split = cheese_data['brand'].str.split('[')
+        cheese_data['brand'] = split.str.get(1)
+        cheese_data.to_csv("cheese_list.csv")
+
+    def df_split(self):
+        feats = pd.read_csv("data/cheese_data.csv", index_col = 0)
+        test_size = 0.2
+        random_state = 42
+
+        X_train, X_test = train_test_split(
+            feats,
+            test_size = test_size,
+            random_state = random_state
+        )
+
+        print(f'Shape of X_train: {X_train.shape}')
+
+        X_train.to_csv(os.path.join('data', 'cheese_train.csv'), index=False)
+        X_test.to_csv(os.path.join('data', 'cheese_test.csv'), index=False)            
+
 
 # 3. 모델링 (Dto)
 # ==============================================================
