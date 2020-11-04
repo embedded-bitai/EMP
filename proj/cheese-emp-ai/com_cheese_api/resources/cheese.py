@@ -1,11 +1,21 @@
-# from com_cheese_api.ext.db import db, openSession
-# from com_cheese_api.ext.db import db
-# from com_cheese_api.util.file import FileReader
-import pandas as pd
-import json
+from typing import List
+from flask import request
+from sqlalchemy import func
+from sqlalchemy import and_, or_
 from flask import Response, jsonify
 from flask_restful import Resource, reqparse
 from sklearn.ensemble import RandomForestClassifier 
+
+
+# from com_cheese_api.ext.db import db, openSession
+# from com_cheese_api.ext.db import db
+# from com_cheese_api.util import FileReader
+from pathlib import Path
+import pandas as pd
+import numpy as np
+import json
+import os
+import sys
 
 # from selenium import webdriver
 import csv, time
@@ -14,7 +24,7 @@ from sklearn.model_selection import train_test_split
 
 # from wordcloud import WordCloud
 # from collections import Counter
-import os
+
 
 '''
  * @ Module Name : cheese.py 
@@ -96,7 +106,7 @@ class CheeseKdd(object):
 
 class CheeseDf():
     def __init__(self):
-        # self.fileReader = FileReader()
+        self.fileReader = FileReader()
         self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'\\data')
         self.odf = None
 
@@ -181,24 +191,29 @@ class CheeseDf():
         # print(self.odf)
         # print(df)
         sumdf = pd.concat([self.odf, df], axis=1)
-
+        return sumdf
+# if __name__ == '__main__':
+#     df = CheeseDf()
+#     df.new_model()        
 
     def new_model(self, payload) -> object:
         this = self.fileReader
         this.data = self.data
         this.fname = payload
         print(f'{self.data}')
-        print(f'self.fname')
-        return this
-        
+        print(f'{self.fname}')
+        return pd.read_csv(Path(self.data, this.fname)) 
+
     @staticmethod
     def create_train(this) -> object:
         return this.train.drop('Category', axis = 1)
+        
 
     @staticmethod
-    def create_label(this) -> object:
+    def drop_label(this) -> object:
         this.train = this.train.drop([feature], axis = 1)
         this.test = this.test.drop([feature], axis = 1)
+        return this
 
     @staticmethod
     def ranking_ordinal(this) -> object:
@@ -209,6 +224,7 @@ class CheeseDf():
         train = this.train
         test = this.test
         train['']
+        return this
 
     @staticmethod
     def types_norminal(this) -> object:
@@ -217,12 +233,11 @@ class CheeseDf():
         for dataset in combine:
             dataset ['types'] = dataset['types'].map(type.mapping)
         this.train = this.train 
-        this.test = this.test 
+        this.test = this.test
 
-        
-    def word_cloud(self) : 
-    # cheese_list = pd.read_csv('cheese_data.csv', encoding ='utf-8') 
-
+        return this
+    
+    def word_cloud(self) :
         text = ""
         with open("./cheese_data.txt", "r", encoding="utf-8") as f:
             lines = f.readlines()
@@ -238,8 +253,10 @@ class CheeseDf():
         plt.show
 
         return wc
-
-        
+#  if __name__ == '__main__':
+#     df = CheeseDf()
+#     df.word_cloud()    
+            
     def  cheese_brand_split(self):
         cheese_data = pd.read_csv('com_cheese_api/resources/data', encoding ='utf-8')
         name = cheese_data['name'].str.split(']')
@@ -269,13 +286,31 @@ class CheeseDf():
 #     df = CheeseDf()
 #     df.df_split() 
 
-    def cheese_data(self):
-        feats = pd.read_csv("data/cheese_data.csv", index_col = 0)   
-        print(feats)
-        print(list(feats))
-        return feats
 
-if __name__ == '__main__':
+    def cheese_data(self, data):
+        # cheese_data = pd.read_csv("data/cheese_data.csv", index_col = 0)   
+        category_map = {
+                '모짜렐라' : 0,
+                '블루치즈' : 1,
+                '리코타' : 2,
+                '체다' : 3 ,
+                '파르미지아노 레지아노' : 4,
+                '고다' : 5,
+                '까망베르' : 6,
+                '브리' : 7,
+                '만체고' : 8,
+                '에멘탈' : 9,
+                '부라타' : 10
+        }
+        cheese_data['category'] = cheese_data['category'].map(category_map)
+        df_category = cheese_data['category']
+        print(df_category)
+        print(cheese_data)
+        return df_category
+
+        
+
+if __name__ == '__main__' :
     df = CheeseDf()
     df.cheese_data() 
 

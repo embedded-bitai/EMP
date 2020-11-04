@@ -28,3 +28,4 @@ pytagcloud==0.3.5
 simplejson==3.17.2
 flask-http-response==0.0.1.0
 seaborn==0.10.1
+wordcloud==1.8.0
