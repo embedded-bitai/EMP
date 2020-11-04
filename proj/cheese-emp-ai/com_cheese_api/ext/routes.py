@@ -1,7 +1,9 @@
 import logging
 from flask import Blueprint
 from flask_restful import Api
-from com_cheese_api.resources.home import Home
+from ..com_cheese_api.resources.home import Home
+from ..com_cheese_api.resources.cheese import Cheese
+
 # from com_cheese_api.resources.item import Item, Items
 # from com_cheese_api.resources.user import User, Users, Auth, Access
 # from com_cheese_api.resources.cabbage import Cheese
@@ -11,9 +13,8 @@ home = Blueprint('home', __name__, url_prefix='/api')
 # users = Blueprint('users', __name__, url_prefix='/api/users')
 # auth = Blueprint('auth', __name__, url_prefix='/api/auth')
 # access = Blueprint('access', __name__, url_prefix='/api/access')
-# cabbage = Blueprint('cheese', __name__, url_prefix='/api/cheese')
+cabbage = Blueprint('cheese', __name__, url_prefix='/api/cheese')
 
-# 블루 프린트 
 api = Api(home)
 
 def initialize_routes(api):
@@ -25,7 +26,7 @@ def initialize_routes(api):
     # api.add_resource(Users, '/api/users')
     # api.add_resource(Auth, '/api/auth')
     # api.add_resource(Access, '/api/access')
-    # api.add_resource(Cheese, '/api/cheese')
+    api.add_resource(Cheese, '/api/cheese')
 
 
 @home.errorhandler(500)

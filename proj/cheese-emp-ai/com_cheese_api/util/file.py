@@ -3,7 +3,6 @@ import pandas as pandas
 import xlrd
 # import googlemaps
 import json
-
 from dataclasses import dataclasses
 
 # @dataclasses

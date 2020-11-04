@@ -9,7 +9,7 @@ config = {
     'password' : 'root',
     'host': '127.0.0.1',
     'port' : '3306',
-    'database' : 'com_sba_api'
+    'database' : 'com_cheese_api'
 }
 charset = {'utf8':'utf8'}
 url = f"mysql+mysqlconnector://{config['user']}:{config['password']}@{config['host']}:{config['port']}/{config['database']}?charset=utf8"
