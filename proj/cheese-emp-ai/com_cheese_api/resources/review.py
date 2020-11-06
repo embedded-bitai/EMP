@@ -1,6 +1,10 @@
+import pandas as pd
+from com_cheese_api.util.file import FileReader
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from com_cheese_api.ext.db import url, db, openSession, engine
 from time import sleep
 import time
 import random
@@ -8,6 +12,40 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
+
+from sklearn.model_selection import train_test_split
+
+import os
+from pathlib import Path
+
+from datetime import datetime
+from flask import Flask, render_template, url_for, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
+
+Session = openSession()
+session = Session()
+
+app = Flask(__name__)
+
+config = {
+    'user': 'bitai',
+    'password': '456123',
+    'host': '127.0.0.1',
+    'port': '3306',
+    'database': 'com_cheese_api'
+}
+
+charset = {'utf8':'utf8'}
+
+url = f"mysql+mysqlconnector://{config['user']}:{config['password']}@{config['host']}:{config['port']}/{config['database']}?charset=utf8"
+
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = url
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+
 
 # Duck typing 방식(엔티티 별로 분리시키고 모듈화한다. user, cheese, review)
 
@@ -176,9 +214,9 @@ class ReviewKdd():
             
         vid_csv_file.close()
 
-if __name__ == "__main__":
-    rw = ReviewKdd()
-    rw.crawling()
+# if __name__ == "__main__":
+#     rw = ReviewKdd()
+#     rw.crawling()
 
 # ==============================================================
 # ====================                     =====================
@@ -188,54 +226,161 @@ if __name__ == "__main__":
 
 # 데이터 정제 과정
 class ReviewDf():
-    import pandas as pd
+    def __init__(self):
+        self.fileReader = FileReader()
+        self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'/data')
+        self.user = None
+        self.odf = None
 
-    cheese_data_frame = pd.read_csv(
-        '/home/bitai/Documents/EMP_Team/EMP_Main/Ai/cheese_flask_proj/data_set/cheese_review_for_analysis.csv',
-        sep=','
-    )
+    def new(self):
+        review = 'cheese_review_panda_2.csv'
+        this = self.fileReader
+        this.review = self.new_model(review)
+        
+        # this = ReviewDf.split_str_1(this.review, 'review_views', "[")
+        # this = ReviewDf.split_str_0(this.review, 'review_views', "]")
+        # this = ReviewDf.split_str_1(this.review, 'review_views', "'")
+        # this = ReviewDf.split_str_1(this.review, 'review_detail', "\n")
 
+        this = ReviewDf.cheese_category_norminal(this)
 
-    cheese_data_frame
-    cheese_data_frame.head(10)
+        this = ReviewDf.brand_merge_code(this)
+        this = ReviewDf.change_column_name(this)
+        print(this.review)
 
-    # 데이터 행과 열 확인
-    cheese_data_frame.shape
+        review_split = ReviewDf.df_split(this.review)
 
-    # 타입 확인
-    cheese_data_frame.dtypes
-
-
-    # '[' 제거
-    split = df['review_views'].str.split("[")
-    df['review_views'] = split.str.get(1)
-    split
-
-    # ']' 제거
-    split = df['review_views'].str.split("]")
-    df['review_views'] = split.str.get(0)
-    split
-
-    # "'" 제거
-    split = df['review_views'].str.split("'")
-    df['review_views'] = split.str.get(1)
-    split
-
-    # "\n" 제거
-    split = df['review_detail'].str.split("\n")
-    df['review_detail'] = split.str.get(1)
-    split
-
-    # 결측값 제거 필요
+        train = 'review_train.csv'
+        test = 'review_test.csv'
+        this = self.fileReader
+        this.train = self.new_model(train) # payload
+        this.test = self.new_model(test) # payload
 
 
-    # pandas로 가공한 데이터 csv 파일로 다시 저장하기
-    # 
-    # df.to_csv('cheese_review_panda.csv')
-    return df
+        print(this.train)
+
+
+
+        self.odf = pd.DataFrame(
+            {
+                'review_no' : this.train.review_no
+            }
+        )
+
+        this = ReviewDf.drop_feature(this, 'review_date')
+
+        # this.label = ReviewDf.create_label(this) # payload
+        # this.train = ReviewDf.create_train(this) # payload
+
+        df = pd.DataFrame(
+
+            {
+                'category': this.train.category,
+                'brand' : this.train.brand_code,
+                'cheese_name': this.train.product_name,
+                'review_title': this.train.review_title,
+                'review_detail': this.train.review_detail,
+                'review_views': this.train.review_views
+                
+            }
+
+        )
+
+        # print(self.odf)
+        # print(df)
+        sumdf = pd.concat([self.odf, df], axis=1)
+        print(sumdf)
+        print(sumdf.isnull().sum())
+        print(list(sumdf))
+        sumdf.to_csv(os.path.join('data', 'review_fin.csv'), index=False, encoding='utf-8-sig')
+        return sumdf
+
+
+    def new_model(self, payload):
+        this = self.fileReader
+        this.data = self.data
+        this.fname = payload
+        print(f'{self.data}')
+        print(f'{this.fname}')
+        return pd.read_csv(Path(self.data, this.fname))
+
+    # @staticmethod
+    # def create_train(this) -> object:
+    #     return this.train.drop('name', axis = 1)
+        
+
+    # @staticmethod
+    # def create_label(this) -> object:
+    #     return this.train['name'] # Label is the answer.
+
+    @staticmethod
+    def drop_feature(this, feature) -> object:
+        this.train = this.train.drop([feature], axis = 1)
+        this.test = this.test.drop([feature], axis = 1)
+        return this
+
+    @staticmethod
+    def split_str_0(this, column, part):
+        split = this[column].str.split(part)
+        this[column] = split.str.get(0)
+        return split
+
+    @staticmethod
+    def split_str_1(this, column, part):
+        split = this[column].str.split(part)
+        this[column] = split.str.get(1)
+        return split
+
+    @staticmethod
+    def change_column_name(this):
+        this.review = this.review.rename(columns={"Unnamed: 0": "review_no"})
+        return this
+
+    @staticmethod
+    def cheese_category_norminal(this) -> object:
+        category_map = {
+            '크림': 0,
+            '모짜렐라': 1,
+            '고르곤졸라': 2,
+            '리코타': 3,
+            '체다': 4,
+            '파마산': 5,
+            '고다': 6,
+            '까망베르': 7,
+            '브리': 8,
+            '만체고': 9,
+            '에멘탈': 10,
+            '부라타': 11
+        }
+        this.review['category'] = this.review['category'].map(category_map)
+        return this
+
+
+    @staticmethod
+    def brand_merge_code(this) -> object:
+        brand_code = pd.read_csv("data/cheese_brand_code.csv")
+        this.review = pd.merge(this.review, brand_code, left_on = 'brand_name', right_on='brand', how = 'left')
+        return this
+
+#     # 결측값 제거 필요
+
+    @staticmethod
+    def df_split(data):
+        review_train, review_test = train_test_split(data, test_size = 0.3, random_state = 32)
+        review_train.to_csv(os.path.join('data', 'review_train.csv'), index=False)
+        review_test.to_csv(os.path.join('data', 'review_test.csv'), index=False)       
+        return review_train, review_test
+
+
+#     # pandas로 가공한 데이터 csv 파일로 다시 저장하기
+#     # 
+#     # df.to_csv('cheese_review_panda.csv')
+#     return df
 
 if __name__ == "__main__":
-    print()
+    reviewDf = ReviewDf()
+    reviewDf.new()
+
 
 
 # ==============================================================
@@ -245,90 +390,122 @@ if __name__ == "__main__":
 # ==============================================================
 # DB로 데이터 전송하는 부분
 class ReviewDto(db.Model):
+
     __tableName__="reviews"
     __table_args__={'mysql_collate':'utf8_general_ci'}
 
-    rev_id: int = db.Column(db.Integer, primary_key=True, index=True)
+    review_no: int = db.Column(db.Integer, primary_key=True, index=True)
+    category: int = db.Column(db.Integer)
+    brand: str = db.Column(db.String(255))
+    cheese_name: str = db.Column(db.String(255))
     review_title: str = db.Column(db.String(100))
     review_detail: str = db.Column(db.String(500))
+    review_views: int = db.Column(db.Integer)
 
-    user_id = db.Column(db.String(10), db.ForeignKey(UserDto.user_id))
-    user = db.relationship('UserDto', back_populates='reviews')
-    item_id = db.Column(db.Integer, db.ForeignKey(ItemDto.item_id))
-    item = db.relationship('ItemDto', back_populates='reviews')
+#     user_id = db.Column(db.String(10), db.ForeignKey(ReviewDto.user_id))
+#     user = db.relationship('ReviewDto', back_populates='reviews')
+#     item_id = db.Column(db.Integer, db.ForeignKey(ItemDto.item_id))
+#     item = db.relationship('ItemDto', back_populates='reviews')
 
-    def __init__(self, title, review_detail, user_id, item_id):
-        self.review_title = title
-        self.review_detail = review_detail
-        self.user_id = user_id
-        self.item_id = item_id
+    def __init__(self,  review_no, category, brand, cheese_name, review_title, review_detail, review_views):
+        self.review_no = review_no,
+        self.category = category,
+        self.brand = brand,
+        self.cheese_name = cheese_name,
+        self.review_title = title,
+        self.review_detail = review_detail,
+        self.review_views = review_views
+
 
     def __repr__(self):
-        return f'rev_id={self.rev_id}, user_id={self.user_id}, item_id={self.item_id},\
-            review_title={self.review_title}, review_detail={self.review_detail}'
+        return f'review_no={self.review_no}, category={self.category}, brand={self.brand},\
+            cheese_name={self.cheese_name}, review_title={self.review_title}, review_detail={self.review_detail}, \
+                review_views={self.review_views}'
 
     def json(self):
         return {
-            'rev_id': self.rev_id,
-            'user_id': self.user_id,
-            'item_id': self.item_id,
+            'review_no': self.review_no,
+            'category': self.category,
+            'brand': self.brand,
+            'cheese_name': self.cheese_name,
             'review_title': self.review_title,
-            'review_detail': self.review_detail
+            'review_detail': self.review_detail,
+            'review_views': self.review_views
         }
 
 
 class ReviewVo():
-    rev_id: int = 0
-    user_id: str = ''
-    item_id: int = 0
+    review_no: int = 0
+    category: str = 0
+    brand: int = ''
+    cheese_name: str = ''
     review_title: str = ''
     review_detail: str = ''
+    review_views: int = 0
 
+
+db.init_app(app)
+with app.app_context():
+    db.create_all()
 
 class ReviewDao(ReviewDto):
-
-    @classmethod
-    def find_all(cls):
-        return cls.query.all()
-
-    @classmethod
-    def find_by_name(cls, name):
-        return cls.query.filer_by(name == name).all()
-
-    @classmethod
-    def find_by_id(cls, id):
-        return cls.query,filter(ReviewDto.rev_id == id).one()
-
     @staticmethod
-    def save(review):
-        Session = openSession()
-        session = Session()
-        session.add(review)
+    def bulk():
+        reviewDf = ReviewDf()
+        df = reviewDf.new()
+        print(df.head())
+        session.bulk_insert_mappings(ReviewDto, df.to_dict(orient="records"))
         session.commit()
+        session.close()
 
-    @staticmethod
-    def update(review, review_id):
-        Session = openSession()
-        session = Session()
-        session.query(ReviewDto).filter(ReviewDto.rev_id == review.review_id)\
-            .update({ReviewDto.review_title: review.review_title,
-                        ReviewDto.review_detail: review.review_detail})
-        session.commit()
-
-    @classmethod
-    def delete(cls, rev_id):
-        Session = openSession()
-        session = Session()
-        cls.query(ReviewDto.rev_id == rev_id).delete()
-        session.commit()
+if __name__ == '__main__':
+    ReviewDao.bulk()
 
 
-class ReviewTF():
-    ...
+#     @classmethod
+#     def find_all(cls):
+#         return cls.query.all()
+
+#     @classmethod
+#     def find_by_name(cls, name):
+#         return cls.query.filer_by(name == name).all()
+
+#     @classmethod
+#     def find_by_id(cls, id):
+#         return cls.query,filter(ReviewDto.rev_id == id).one()
+
+#     @staticmethod
+#     def save(review):
+#         Session = openSession()
+#         session = Session()
+#         session.add(review)
+#         session.commit()
+
+#     @staticmethod
+#     def update(review, review_id):
+#         Session = openSession()
+#         session = Session()
+#         session.query(ReviewDto).filter(ReviewDto.rev_id == review.review_id)\
+#             .update({ReviewDto.review_title: review.review_title,
+#                         ReviewDto.review_detail: review.review_detail})
+#         session.commit()
+
+#     @classmethod
+#     def delete(cls, rev_id):
+#         Session = openSession()
+#         session = Session()
+#         cls.query(ReviewDto.rev_id == rev_id).delete()
+#         session.commit()
+
+
+# class ReviewTF():
+#     ...
     
-class ReviewAi():
-    ...
+# class ReviewAi():
+#     ...
 
+# if __name__ == '__main__':
+#     ReviewDao.bulk()
 
 
 # ==============================================================
@@ -337,54 +514,54 @@ class ReviewAi():
 # ====================                     =====================
 # ==============================================================
 
-# API로 만드는 부분
-class ReviewApi():
-    def __init__(self):
-        self.parser = reqparse.RequestParser()
+# # API로 만드는 부분
+# class ReviewApi():
+#     def __init__(self):
+#         self.parser = reqparse.RequestParser()
 
-    def post(self):
-        parser = self.parser
-        parser.add_argument('user_id', type=int, required=False, help='This field cannot be left blank')
-        parser.add_argument('item_id', type=int, required=False, help='This field cannot be left blank')
-        parser.add_argument('review_title', type=str, required=False, help='This field cannot be left blank')
-        parser.add_argument('review_detail', type=str, required=False, help='This field cannot be left blank')
-        args = parser.parse_args()
-        article = ReviewDto(args['review_title'], args['review_detail'],\
-                            args['user_id'], args['item_id'])
-        try:
-            ReviewDao.save(review)
-            return {'code' : 0, 'message' : 'SUCCESS'}, 200
-        except:
-            return {'message': 'An error occured inserting the review'}, 500
+#     def post(self):
+#         parser = self.parser
+#         parser.add_argument('user_id', type=int, required=False, help='This field cannot be left blank')
+#         parser.add_argument('item_id', type=int, required=False, help='This field cannot be left blank')
+#         parser.add_argument('review_title', type=str, required=False, help='This field cannot be left blank')
+#         parser.add_argument('review_detail', type=str, required=False, help='This field cannot be left blank')
+#         args = parser.parse_args()
+#         article = ReviewDto(args['review_title'], args['review_detail'],\
+#                             args['user_id'], args['item_id'])
+#         try:
+#             ReviewDao.save(review)
+#             return {'code' : 0, 'message' : 'SUCCESS'}, 200
+#         except:
+#             return {'message': 'An error occured inserting the review'}, 500
 
-    @staticmethod
-    def get(id):
-        review = ReviewDao.find_by_id(id)
-        if review:
-            return review.json()
-        return {'message': 'Review not found'}, 404
+#     @staticmethod
+#     def get(id):
+#         review = ReviewDao.find_by_id(id)
+#         if review:
+#             return review.json()
+#         return {'message': 'Review not found'}, 404
 
-    @staticmethod
-    def put(self, review, review_id):
-        parser = self.parser
-        parser.add_argument('rev_id', type=int, required=False, help='This field cannot be left blank')
-        parser.add_argument('user_id', type=int, required=False, help='This field cannot be left blank')
-        parser.add_argument('item_id', type=int, required=False, help='This field cannot be left blank')
-        parser.add_argument('review_title', type=str, required=False, help='This field cannot be left blank')
-        parser.add_argument('review_detail', type=str, required=False, help='This field cannot be left blank')
-        args = parser.parse_args()
-        review = ReviewVo()
-        review.review_title = args['review_title']
-        review.review_detail = args['review_detail']
-        review.rev_id = args['rev_id']
-        try:
-            ReviewDao.update(review, review_id)
-            return {'message': 'Review was Updated Successfully'}, 200
-        except:
-            return {'message': 'An Error Occured Updating the Review'}, 500
+#     @staticmethod
+#     def put(self, review, review_id):
+#         parser = self.parser
+#         parser.add_argument('rev_id', type=int, required=False, help='This field cannot be left blank')
+#         parser.add_argument('user_id', type=int, required=False, help='This field cannot be left blank')
+#         parser.add_argument('item_id', type=int, required=False, help='This field cannot be left blank')
+#         parser.add_argument('review_title', type=str, required=False, help='This field cannot be left blank')
+#         parser.add_argument('review_detail', type=str, required=False, help='This field cannot be left blank')
+#         args = parser.parse_args()
+#         review = ReviewVo()
+#         review.review_title = args['review_title']
+#         review.review_detail = args['review_detail']
+#         review.rev_id = args['rev_id']
+#         try:
+#             ReviewDao.update(review, review_id)
+#             return {'message': 'Review was Updated Successfully'}, 200
+#         except:
+#             return {'message': 'An Error Occured Updating the Review'}, 500
 
 
-# 리뷰 리스트 
-class Reviews(Resource):
-    def get(self):
-        return {'reivews': list(map(lambda review: review.json(), ReviewDao.find_all()))}
+# # 리뷰 리스트 
+# class Reviews(Resource):
+#     def get(self):
+#         return {'reivews': list(map(lambda review: review.json(), ReviewDao.find_all()))}

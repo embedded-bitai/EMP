@@ -131,7 +131,7 @@ class UserDf:
         sumdf = pd.concat([self.odf, df], axis = 1)
         print('######## train 데이터 전처리 완료 체크 ##########')
         print(sumdf) # train 데이터만 추출했기 때문에 25811개
-        sumdf.to_csv(os.path.join('com_cheese_api/resources/data', 'users_data.csv'), index=False, encoding='utf-8-sig')
+        sumdf.to_csv(os.path.join('data', 'users_data.csv'), index=False, encoding='utf-8-sig')
         
         return sumdf
 
@@ -201,13 +201,13 @@ class UserDf:
     def change_to_cheese(data, item_count):
         cheese_df = data.rename(columns={'ranking': 'sub2_rank'})
         user_cheese_merge = pd.merge(item_count, cheese_df, on = 'sub2_rank', how = 'left')
-        user_data1 = user_cheese_merge.drop(['Unnamed: 0_x', 'item_code', 'item_name', 'item_add_name', 'category_x', 'sub1_category', 'sub2_category', 'item_brand', 'sub1_counts', 'sub1_rank', 'sub2_counts', 'buy_price'], axis=1)
-        user_data2 = user_data1.drop(['country', 'matching', 'matching.1', 'content', 'img'], axis=1)
-        user_data_fin = user_data2.rename(columns={'Unnamed: 0_y': 'cheese_code', 'brand': 'cheese_brand', 'name': 'cheese_name', 'price' : 'cheese_one_price', 'sub2_rank': 'cheese_rank', \
+        user_data1 = user_cheese_merge.drop(['item_code', 'item_name', 'item_add_name', 'category_x', 'sub1_category', 'sub2_category', 'item_brand', 'sub1_counts', 'sub1_rank', 'sub2_counts', 'buy_price'], axis=1)
+        user_data2 = user_data1.drop(['country', 'matching', 'content', 'img'], axis=1)
+        user_data_fin = user_data2.rename(columns={'Unnamed: 0_x': 'user_index', 'Unnamed: 0_y': 'cheese_code', 'brand': 'cheese_brand', 'name': 'cheese_name', 'price' : 'cheese_one_price', 'sub2_rank': 'cheese_rank', \
                                                         'category_y': 'cheese_category', 'texture': 'cheese_texture', 'types': 'cheese_types'})
         # print(list(users_cheese_merge))
         # print(user_data_fin)
-        # user_data_fin.to_csv(os.path.join('com_cheese_api/resources/data', 'user_df.csv'), index=True, encoding='utf-8-sig')
+        user_data_fin.to_csv(os.path.join('data', 'user_df.csv'), index=False, encoding='utf-8-sig')
         return user_data_fin
     # item_Change()
 
@@ -231,7 +231,7 @@ class UserDf:
         gender_mapping = {'M': 0, 'F': 1}
         this.user['gender'] = this.user['user_gender'].map(gender_mapping)
         this.user = this.user # overriding
-        # this.user.to_csv(os.path.join('com_cheese_api/resources/data', 'check11.csv'), index=False, encoding='utf-8-sig')
+        # this.user.to_csv(os.path.join('data', 'check11.csv'), index=False, encoding='utf-8-sig')
         return this
 
 
@@ -251,7 +251,7 @@ class UserDf:
         user['age_group'] = user['age_group'].map(age_mapping)
         this.user = this.user # overriding
         print(this.user)
-        # this.user.to_csv(os.path.join('com_cheese_api/resources/data', 'user_check.csv'), index=False, encoding='utf-8-sig')
+        # this.user.to_csv(os.path.join('data', 'user_check.csv'), index=False, encoding='utf-8-sig')
         return this
 
     @staticmethod
@@ -311,8 +311,8 @@ class UserDf:
     @staticmethod
     def user_data_split (data):
         user_train, user_test = train_test_split(data, test_size=0.3, random_state = 32)
-        user_train.to_csv(os.path.join('com_cheese_api/resources/data', 'user_train.csv'), index=False)
-        user_test.to_csv(os.path.join('com_cheese_api/resources/data', 'user_test.csv'), index=False)
+        user_train.to_csv(os.path.join('data', 'user_train.csv'), index=False)
+        user_test.to_csv(os.path.join('data', 'user_test.csv'), index=False)
         return user_train, user_test
 
 
@@ -336,7 +336,7 @@ class UserDf:
         user_df = data.loc[:,['cheese_name']]
         user_lists = np.array(user_df['cheese_name'].tolist())
                 
-        with open('com_cheese_api/resources/data/stopword.txt', 'r') as file:
+        with open('data/stopword.txt', 'r') as file:
             lines = file.readlines()
             stop_str = ''.join(lines)
             stopword = stop_str.replace('\n', ' ')
