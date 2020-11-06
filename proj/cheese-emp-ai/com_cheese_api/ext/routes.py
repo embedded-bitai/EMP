@@ -1,8 +1,12 @@
 import logging
 from flask import Blueprint
 from flask_restful import Api
-from ..com_cheese_api.resources.home import Home
-from ..com_cheese_api.resources.cheese import Cheese
+from com_cheese_api.cmm.hom.resource.home import Home
+from com_cheese_api.cop.rvw.model.review_dto import ReviewVo
+from com_cheese_api.cop.chs.model.cheese_dto import CheeseVo
+from com_cheese_api.cop.rvw.resource.review import Review, Reviews
+from com_cheese_api.usr.resource.user import User, Users
+from com_cheese_api.usr.resource.access import Access
 
 # from com_cheese_api.resources.item import Item, Items
 # from com_cheese_api.resources.user import User, Users, Auth, Access
