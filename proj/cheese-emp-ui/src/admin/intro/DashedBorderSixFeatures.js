@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "../../components/cmm/node_modules/styled-components";
 import tw from "twin.macro";
 import axios from "axios"
 //eslint-disable-next-line
