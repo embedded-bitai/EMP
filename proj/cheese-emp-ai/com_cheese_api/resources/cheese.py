@@ -29,7 +29,23 @@ import csv, time
 
 from sklearn.model_selection import train_test_split
 
+# from wordcloud import WordCloud
+# from collections import Counter
 
+
+'''
+ * @ Module Name : cheese.py 
+ * @ Description : Recommendation for cheese product
+ * @ since 2020.10.20
+ * @ version 1.0
+ * @ label : 'category'
+ * @ 치즈 상품 추천 개발 김유정
+ * @ special reference libraries
+ *     finance_datareader, konlpy
+ * @ 수정일         수정자                   수정내용
+ *  -------    --------    ---------------------------
+ *  2020.10.20    김유정          최초 생성
+''' 
 
 # 1. 데이터 추출 KDD의 목표는 csv로 만드는 것
 # ==============================================================
@@ -98,36 +114,36 @@ from sklearn.model_selection import train_test_split
     # =====================                  =======================
     # ==============================================================
 
-# from datetime import datetime
-# from flask import Flask, render_template, url_for, flash, redirect
-# from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from flask import Flask, render_template, url_for, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
 
-# Session = openSession()
-# session = Session()
+Session = openSession()
+session = Session()
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
-# config = {
-#     'user': 'bitai',
-#     'password': '456123',
-#     'host': '127.0.0.1',
-#     'port': '3306',
-#     'database': 'com_cheese_api'
-# }
+config = {
+    'user': 'bitai',
+    'password': '456123',
+    'host': '127.0.0.1',
+    'port': '3306',
+    'database': 'com_cheese_api'
+}
 
-# charset = {'utf8':'utf8'}
+charset = {'utf8':'utf8'}
 
-# url = f"mysql+mysqlconnector://{config['user']}:{config['password']}@{config['host']}:{config['port']}/{config['database']}?charset=utf8"
-
-
-
-# app.config['SQLALCHEMY_DATABASE_URI'] = url
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# db = SQLAlchemy(app)
+url = f"mysql+mysqlconnector://{config['user']}:{config['password']}@{config['host']}:{config['port']}/{config['database']}?charset=utf8"
 
 
 
-class CheeseDf():
+app.config['SQLALCHEMY_DATABASE_URI'] = url
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+
+
+class CheeseDf:
     def __init__(self):
         self.fileReader = FileReader()
         self.data = os.path.join(os.path.abspath(os.path.dirname(__file__))+'/data')
@@ -142,6 +158,7 @@ class CheeseDf():
 
         print(this.cheese.isnull().sum())
 
+        this = CheeseDf.brand_merge_code(this)
         this = CheeseDf.ranking_ordinal(this)
         this = CheeseDf.cheese_texture_norminal(this)
         this = CheeseDf.types_norminal(this)
@@ -162,10 +179,10 @@ class CheeseDf():
         self.odf = pd.DataFrame(
             {
                 'ranking' : this.train.ranking,
-                'cheese_id' : this.train.cheese_id,
-                'brand' : this.train.brand,
+                'brand' : this.train.brand_code,
                 'category' : this.train.category,
-                'types': this.train.types
+                'types': this.train.types,
+                'matching': this.train.matching
             }
         )
 
@@ -176,7 +193,6 @@ class CheeseDf():
         this = CheeseDf.drop_feature(this, 'country')
         this = CheeseDf.drop_feature(this, 'price')
         this = CheeseDf.drop_feature(this, 'content')
-        this = CheeseDf.drop_feature(this, 'cheese_id')
         # print(f'Post-Drop Variable : {this.train.columns}')   
 
 
@@ -202,8 +218,8 @@ class CheeseDf():
 
             {
                 'texture': this.train.texture,
-                # 'matching' : this.train.matching,
-                'img' : this.train.img            
+                'img' : this.train.img
+                
             }
 
         )
@@ -214,7 +230,7 @@ class CheeseDf():
         print(sumdf)
         print(sumdf.isnull().sum())
         print(list(sumdf))
-        sumdf.to_csv(os.path.join('com_cheese_api/resources/data', 'cheese_fin.csv'), index=False, encoding='utf-8-sig')
+        sumdf.to_csv(os.path.join('data', 'cheese_fin.csv'), index=False, encoding='utf-8-sig')
         return sumdf
 
 
@@ -240,6 +256,12 @@ class CheeseDf():
     def drop_feature(this, feature) -> object:
         this.train = this.train.drop([feature], axis = 1)
         this.test = this.test.drop([feature], axis = 1)
+        return this
+
+    @staticmethod
+    def brand_merge_code(this) -> object:
+        brand_code = pd.read_csv("data/cheese_brand_code.csv")
+        this.cheese = pd.merge(this.cheese, brand_code, left_on = 'brand', right_on='brand', how = 'left')
         return this
 
     @staticmethod
@@ -284,12 +306,11 @@ class CheeseDf():
         this.cheese['category'] = this.cheese['category'].map(category_map)
         return this
 
-
     @staticmethod
     def df_split(data):
         cheese_train, cheese_test = train_test_split(data, test_size = 0.3, random_state = 32)
-        cheese_train.to_csv(os.path.join('com_cheese_api/resources/data', 'cheese_train.csv'), index=False)
-        cheese_test.to_csv(os.path.join('com_cheese_api/resources/data', 'cheese_test.csv'), index=False)       
+        cheese_train.to_csv(os.path.join('data', 'cheese_train.csv'), index=False)
+        cheese_test.to_csv(os.path.join('data', 'cheese_test.csv'), index=False)       
         return cheese_train, cheese_test
 
 # if __name__ == '__main__' :
@@ -328,60 +349,70 @@ class CheeseDto(db.Model):
     __tablename__='cheeses'
     __table_args__={'mysql_collate':'utf8_general_ci'}
 
-    cheese_id : int = db.Column(db.Integer, primary_key=True, index=True)
-    ranking : int = db.Column(db.Integer)
+    ranking : int = db.Column(db.Integer, primary_key=True, index=True)
+    brand : int = db.Column(db.Integer)
     category: int = db.Column(db.Integer)
     types : int = db.Column(db.Integer)
-    brand : str = db.Column(db.String(30))
     texture : str = db.Column(db.String(30))
     img : str = db.Column(db.String(255))
 
 
     #dairy = db.relationship('DiaryDto', lazy='dynamic')
-    orders = db.relationship('OrderDto', back_populates='cheese', lazy='dynamic')
-    prices = db.relationship('PriceDto', back_populates='cheese', lazy='dynamic')
+    # orders = db.relationship('OrderDto', back_populates='cheese', lazy='dynamic')
+    # prices = db.relationship('PriceDto', back_populates='cheese', lazy='dynamic')
 
-    def __init__(self, cheeseid, name, price, types, texture, taste, matching, content) : 
-        self.cheese_id = cheese_id
+    def __init__(self, ranking, brand, category, types, texture, img) : 
         self.ranking = ranking
+        self.brand = brand
         self.category = category
         self.types = types
-        self.brand = brand
         self.texture = texture
         self.img = img
 
     def __repr__(self):
-        return f'cheese(cheese_id={self.cheese_id}, ranking={self.ranking}, category={self.category}, \
-                    types={self.types}, texture={self.texture}, brand={self.brand}, img={self.img})'
+        return f'Cheese(ranking={self.ranking}, brand={self.brand}, category={self.category}, \
+                    types={self.types}, texture={self.texture}, img={self.img})'
+
+    def __str__(self):
+        return f'Cheese(ranking={self.ranking}, brand={self.brand}, category={self.category}, \
+                    types={self.types}, texture={self.texture}, img={self.img})'
+
 
     @property
     def json(self):
-        return {'cheese_id':self.cheese_id, 'ranking':self.ranking, 'category':self.category, 'types':self.types, 'texture':self.types, \
-                    'brand':self.brand, 'img':self.img}
+        return {'ranking':self.ranking, 'brand':self.brand, 'category':self.category, \
+                    'types':self.types, 'texture':self.types, 'img':self.img}
 
 class CheeseVo():
-    cheese_id : 0
     ranking : 0
+    brand : ''
     category: 0
     types : 0
-    brand : ''
     texture : ''
     img : ''
 
 
-Session = openSession()
-session = Session()
+db.init_app(app)
+with app.app_context():
+    db.create_all()
     
 
-# class CheeseDao(CheeseDto):
-#     @classmethod
-#     def bulk(cls, CheeseDf):
-#         cheeseDf = CheeseDf()
-#         df = CheeseDf.new()
-#         print(df.head())
-#         session.bulk_insert_mappings(CheeseDto, df.to_dict(orient="records"))
-#         session.commit()
-#         session.close()
+class CheeseDao(CheeseDto):
+    # @classmethod
+    # def bulk(cls, CheeseDf):
+    #     df = CheeseDf.new()
+    #     print(df.head())
+    #     session.bulk_insert_mappings(cls, df.to_dict(orient="records"))
+    #     session.commit()
+    #     session.close()
+    @staticmethod
+    def bulk():
+        cheeseDf = CheeseDf()
+        df = cheeseDf.new()
+        print(df.head())
+        session.bulk_insert_mappings(CheeseDto, df.to_dict(orient="records"))
+        session.commit()
+        session.close()
 
-# if __name__ == '__main__':
-#     CheeseDao.bulk()
+if __name__ == '__main__':
+    CheeseDao.bulk()
