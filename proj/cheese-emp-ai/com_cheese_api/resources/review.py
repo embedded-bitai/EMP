@@ -10,7 +10,6 @@ import time
 import random
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from bs4 import BeautifulSoup
 from bs4.element import NavigableString
 
 from sklearn.model_selection import train_test_split
@@ -80,6 +79,7 @@ class ReviewKdd():
         print(target_tag.text)
 
     
+
     def crawling(self):
         print(self.name)
         # create a new chrome session
@@ -92,21 +92,18 @@ class ReviewKdd():
         # 55222 38186 32309 7388 5765 40724 52606 5869 47724 40725
         # URL = 'https://www.kurly.com/shop/goods/goods_review_list.php?goodsno=55222'
         # URL = 'https://www.kurly.com/shop/goods/goods_review_list.php?goodsno=55222&page={}'
-        for i in range(0, 11):
-            print(f'{i+1}')
-            
-        URL = 'https://www.kurly.com/shop/goods/goods_review_list.php?goodsno=40725&page={}'
+        
+        # 2 ~ 11 페이지의 내용을 크롤링 한다.(총 10 page)
+        URL = 'https://www.kurly.com/shop/goods/goods_review_list.php?goodsno=55222&page={}'
 
         driver.get(URL)
 
-        # 1.25초간 sleep
-        sleep(1.25)
+        # 1.1초간 sleep
+        sleep(1.1)
 
         # 리뷰 페이지 내용
         page = driver.page_source
         page
-
-
         
 
         # 웹사이트 2페이지 결과값
@@ -132,70 +129,79 @@ class ReviewKdd():
         review_views
 
 
-
         # 2~17page 까지만 진행(range 1,18)
         # 17page(2~18p), 15page는 105개라 발생할 수 있는 더미 데이터까지 감안하면 애매해서 16page
         # -> 17page로 진행(생각보다 이상 데이터가 많다)
-
         review_list = []
 
-        for n in range(1, 18):
-            # print("==1" + url)
-            url = URL.format(n+1)
-            print("==2" + url)
-            webpage = urlopen(url)
-            
-            driver.get(url)
-            
-            soup = BeautifulSoup(webpage, 'html.parser')        
-            
-            review_details = []
-            
-            
-            # 제품명, 제조사
-            product_names = soup.select('.name')
-            review_titles = soup.select('.fst')    
-            review_times = soup.select('.time')
-            review_viewss = soup.select('.review-hit-cnt')
+        url_list = [55222, 38186, 32309, 7388, 5765, 40724, 52606, 5869, 47724, 40725]
+        page_num = 0
 
+        for url_element in url_list:
 
-            # 리뷰 상세
-            target_tag = soup.select('.inner_review')    
-            
-            
-            for tags in target_tag:
-                
+            # 2 ~ 11 페이지의 내용을 크롤링 한다.(총 10 page)
+            # 2 ~ 3 페이지로 테스트 중 range(2, 4)
+            for page_num in range(2, 4):
+                URL = f'https://www.kurly.com/shop/goods/goods_review_list.php?goodsno={url_element}&page={page_num}'
+
+                # for n in range(1, 18):
+                # print("==1" + url)
+                url = URL
+                print("==2" + url)
                 webpage = urlopen(url)
+                
                 driver.get(url)
-                soup = BeautifulSoup(webpage, 'html.parser')             
                 
-                cont = ''
-                for tag in tags:
-                    if isinstance(tag, NavigableString) and tag != "\n":
-                        cont = cont + tag
-
-                review_details.append(cont)
+                soup = BeautifulSoup(webpage, 'html.parser')
                 
-                time.sleep(random.uniform(1, 1.1))
+                review_details = []
+                
+                
+                # 제품명, 제조사
+                product_names = soup.select('.name')
+                review_titles = soup.select('.fst')    
+                review_times = soup.select('.time')
+                review_viewss = soup.select('.review-hit-cnt')
 
-
-            for i in range(0, len(review_titles)):
-
-                review_row = []
-
-                review_row.append(product_names[i].text.split('<div'))
-                review_row.append(review_titles[i].text.split('<div'))
 
                 # 리뷰 상세
-                review_row.append(review_details[i])
+                target_tag = soup.select('.inner_review')    
+                
+                
+                for tags in target_tag:
+                    
+                    webpage = urlopen(url)
+                    driver.get(url)
+                    soup = BeautifulSoup(webpage, 'html.parser')             
+                    
+                    cont = ''
+                    for tag in tags:
+                        if isinstance(tag, NavigableString) and tag != "\n":
+                            cont = cont + tag
 
-                review_row.append(review_times[i].text.split('<td'))        
-                review_row.append(review_viewss[i].text.split('<span'))
+                    review_details.append(cont)
+                    
+                    time.sleep(random.uniform(1, 1.1))
 
-                review_list.append(review_row)
 
-                time.sleep(random.uniform(1, 1.1))
+                for i in range(0, len(review_titles)):
+
+                    review_row = []
+
+                    review_row.append(product_names[i].text.split('<div'))
+                    review_row.append(review_titles[i].text.split('<div'))
+
+                    # 리뷰 상세
+                    review_row.append(review_details[i])
+
+                    review_row.append(review_times[i].text.split('<td'))        
+                    review_row.append(review_viewss[i].text.split('<span'))
+
+                    review_list.append(review_row)
+
+                    time.sleep(random.uniform(1, 1.1))
         
+        print("크롤링 끝!!!")
         review_list
 
 
@@ -203,7 +209,7 @@ class ReviewKdd():
         # csv 파일 다운로드하기
         import csv
 
-        vid_csv_file = open("/home/bitai/WDOP/proj_my3/cheese_review_crawl_python/cheese2pic_real_part10.csv", "w", newline = "")
+        vid_csv_file = open("/home/bitai/Documents/EMP_Team/EMP_Main/Ai/cheese_flask_proj/data_set/cheese2pic_real_part10.csv", "w", newline = "")
         vid_csv_writer = csv.writer(vid_csv_file)
 
 
@@ -214,9 +220,9 @@ class ReviewKdd():
             
         vid_csv_file.close()
 
-# if __name__ == "__main__":
-#     rw = ReviewKdd()
-#     rw.crawling()
+if __name__ == "__main__":
+    rw = ReviewKdd()
+    rw.crawling()
 
 # ==============================================================
 # ====================                     =====================
@@ -248,7 +254,14 @@ class ReviewDf():
         this = ReviewDf.change_column_name(this)
         print(this.review)
 
+
         review_split = ReviewDf.df_split(this.review)
+
+    cheese_data_frame = pd.read_csv(
+        '/home/bitai/Documents/EMP_Team/EMP_Main/Ai/cheese_flask_proj/data_set/cheese2pic_real_part10.csv',
+        sep=','
+    )
+
 
         train = 'review_train.csv'
         test = 'review_test.csv'
@@ -313,6 +326,7 @@ class ReviewDf():
     # def create_label(this) -> object:
     #     return this.train['name'] # Label is the answer.
 
+
     @staticmethod
     def drop_feature(this, feature) -> object:
         this.train = this.train.drop([feature], axis = 1)
@@ -362,7 +376,7 @@ class ReviewDf():
         this.review = pd.merge(this.review, brand_code, left_on = 'brand_name', right_on='brand', how = 'left')
         return this
 
-#     # 결측값 제거 필요
+    # 결측값 제거 필요
 
     @staticmethod
     def df_split(data):
@@ -380,7 +394,6 @@ class ReviewDf():
 if __name__ == "__main__":
     reviewDf = ReviewDf()
     reviewDf.new()
-
 
 
 # ==============================================================
