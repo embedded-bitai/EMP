@@ -1,0 +1,6 @@
+export {default as Home} from './Home'
+export {default as Cheese} from './Cheese'
+export {default as Review} from './Review'
+export {default as Login} from './Login'
+// export {default as Signup} from '/user/Singup'
+export {default as Survey} from './Survey'
