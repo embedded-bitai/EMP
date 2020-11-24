@@ -37,6 +37,7 @@ export default () => {
       )
   }
 
+
   return (
     <div>
       <Header />
@@ -151,6 +152,7 @@ export default () => {
           subheading=""
           heading={<>Customers <HighlightedText>Love Us.</HighlightedText></>}
         />
+
       </AnimationRevealPage>
       <Footer />
     </div>
