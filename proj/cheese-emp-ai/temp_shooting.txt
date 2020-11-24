@@ -1,0 +1,20 @@
+======================== 201114 ========================
+
+pip install MySQL-connector-python
+
+
+# pip 최신버전 업그레이드
+python -m pip install --upgrade pip
+
+# 작동안함
+python3 -m pip install mysql-connector-python
+
+
+# 윈10에서 아래 오류 해결한 명령어
+# env: mysql version 8.x
+
+"Authentication plugin '{0}' is not supported".
+format(plugin_name)) mysql.connector.errors.
+NotSupportedError: Authentication plugin 'caching_sha2_password' is not supported"
+
+solv: conda install -c anaconda mysql-connector-python
