@@ -27,9 +27,10 @@ yarn-error.log*
 data_set/.ipynb_checkpoints/
 __pycache__
 com_cheese_api.egg-info/
+data_set/
 private_run.py
 recommend_dfo.py
 cheese_model.h5
 user_svm_model.pkl
 
-/data
+data/
