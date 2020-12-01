@@ -18,6 +18,9 @@ from com_cheese_api.cop.ord.order.resource.best import GenderBest, AgeBest
 from com_cheese_api.cop.rev.review.model.review_dto import ReviewVo
 from com_cheese_api.cop.rev.review.resource.review import Review, Reviews
 
+from com_cheese_api.cop.chat.chatbot.resource.chatbot import Chatbot
+from com_cheese_api.cop.rec.recommend.resource.recommend import Recommend
+
 
 
 home = Blueprint('home', __name__, url_prefix='/api')
@@ -49,6 +52,16 @@ review = Blueprint('review', __name__, url_prefix='/api/review')
 reviews = Blueprint('reviews', __name__, url_prefix='/api/reviews')
 
 
+# ================================= Chatbot =================================
+chatbot = Blueprint('chatbot', __name__, url_prefix='/api/chatbot/')
+
+
+# ================================= Chatbot =================================
+recommend = Blueprint('recommend', __name__, url_prefix='/api/recommend')
+
+
+
+
 api = Api(home)
 
 api = Api(user)
@@ -70,10 +83,20 @@ api = Api(review)
 # api = Api(review_new)
 api = Api(reviews)
 
-def initialize_routes(api):
-    # cheese = CheeseVo()
 
+api = Api(chatbot)
+
+api = Api(recommend)
+
+####################################################################
+
+
+
+
+
+def initialize_routes(api):    
     api.add_resource(Home, '/api')
+
     # ================================= User =================================
     api.add_resource(User, '/api/user', '/api/user/<user_id>')
     api.add_resource(Users, '/api/users')
@@ -99,50 +122,55 @@ def initialize_routes(api):
     api.add_resource(Reviews, '/api/reviews')
 
 
+    # ================================= Chatbot =================================
+    api.add_resource(Chatbot, '/api/chatbot')
+
+    # ================================= Chatbot =================================
+    api.add_resource(Recommend, '/api/recommend')
+
+
 @home.errorhandler(500)
 def home_api_error(e):
     logging.exception('An error occurred during home request. %s' % str(e))
     return 'An internal error occurred.', 500
 
-# @user.errorhandler(500)
-# def user_api_error(e):
-#     logging.exception('An error occurred during user request. %s' % str(e))
-#     return 'An internal error occurred.', 500
+@user.errorhandler(500)
+def user_api_error(e):
+    logging.exception('An error occurred during user request. %s' % str(e))
+    return 'An internal error occurred.', 500
 
-# @cheese.errorhandler(500)
-# def cheese_api_error(e):
-#     logging.exception('An error occurred during cheese request. %s' % str(e))
-#     return 'An internal error occurred.', 500
+@user.errorhandler(500)
+def login_api_error(e):
+    logging.exception('An error occurred during user request. %s' % str(e))
+    return 'An internal error occurred.', 500
+
+@user.errorhandler(500)
+def auth_api_error(e):
+    logging.exception('An error occurred during user request. %s' % str(e))
+    return 'An internal error occurred.', 500
 
 @cheeses.errorhandler(500)
-def cheeses_api_error(e):
+def cheese_api_error(e):
     logging.exception('An error occurred during cheeses request. %s' % str(e))
     return 'An internal error occurred.', 500
 
+@order.errorhandler(500)
+def order_api_error(e):
+    logging.exception('An error occurred during home request. %s' % str(e))
+    return 'An internal error occurred.', 500
 
+@cheeses.errorhandler(500)
+def review_api_error(e):
+    logging.exception('An error occurred during cheeses request. %s' % str(e))
+    return 'An internal error occurred.', 500
 
-# ==============================================================
-# ====================                     =====================
-# ====================         TEST        =====================
-# ====================                     =====================
-# ==============================================================
+@chatbot.errorhandler(500)
+def review_api_error(e):
+    logging.exception('An error occurred during cheeses request. %s' % str(e))
+    return 'An internal error occurred.', 500
 
-# from com_cheese_api.home.api import HomeAPI
-# from com_cheese_api.cheese.cheese_api import CheeseAPI
-# from com_cheese_api.board.board_api import BoardAPI
-# from com_cheese_api.suggest.suggest_api import SuggestAPI
-# from com_cheese_api.admin.admin_api import AdminAPI
-# from com_cheese_api.login.login_api import LoginAPI
-# from com_cheese_api.login.sign_up_api import SignUpAPI
-
-
-# def initialize_routes(api):
-#     api.add_resource(HomeAPI, '/api')
-#     api.add_resource(CheeseAPI, '/api/cheese')
-#     api.add_resource(BoardAPI, '/api/board')
-#     api.add_resource(SuggestAPI, '/api/suggest')
-#     api.add_resource(AdminAPI, '/api/admin')
-#     api.add_resource(LoginAPI, '/api/login')
-#     api.add_resource(SignUpAPI, '/api/sign_up')
-
-
+@recommend.errorhandler(500)
+def review_api_error(e):
+    logging.exception('An error occurred during cheeses request. %s' % str(e))
+    return 'An internal error occurred.', 500
+  
