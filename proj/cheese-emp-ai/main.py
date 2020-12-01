@@ -1,38 +1,43 @@
 from flask import Flask
 from flask_restful import Api
-from flask_cors import CORS
-
 from com_cheese_api.ext.db import url, db, openSession
 from com_cheese_api.ext.routes import initialize_routes
-from com_cheese_api.cmm.hom.home import Home
-# from com_cheese_api.usr.user.model.user_dfo import UserDfo
+
+from com_cheese_api.usr.user.model.user_dfo import UserDfo
 from com_cheese_api.usr.user.model.user_dao import UserDao
+# from com_cheese_api.usr.user.model.user_dto import UserDto
 
-# from com_cheese_api.cop.itm.cheese.model.cheese_dfo import CheeseDfo
-from com_cheese_api.cop.itm.cheese.model.cheese_dao import CheeseDao
-
+from com_cheese_api.cop.ord.order.model.order_dfo import OrderDfo
 from com_cheese_api.cop.ord.order.model.order_dao import OrderDao
+# from com_cheese_api.cop.ord.order.model.order_dto import OrderDto
+
+from com_cheese_api.cop.itm.cheese.model.cheese_dfo import CheeseDfo
+from com_cheese_api.cop.itm.cheese.model.cheese_dao import CheeseDao
+# from com_cheese_api.cop.itm.cheese.model.cheese_dto import cheeseDto
 
 # from com_cheese_api.cop.rev.review.model.review_dto import ReviewDto
 from com_cheese_api.cop.rev.review.model.review_dao import ReviewDao
 
+from flask_cors import CORS,cross_origin
 
 Session = openSession()
 session = Session()
 
+
 app = Flask(__name__)
 CORS(app, resources={r'/api/*': {"origins": "*"}})
+CORS(app, resources={r'/api/*': {"origins": "http://localhost:3000"}})
 
 app.config['SQLALCHEMY_DATABASE_URI'] = url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+
 api = Api(app)
 
 
+
 # if __name__ == '__main__':
-
-
 
 with app.app_context():
 
@@ -94,27 +99,3 @@ initialize_routes(api)
 
 print("========== main.py END ==========")
 
-
-
-# dfo = CheeseDfo()
-# cheese_df = dfo.cheese_df()
-# df = dfo.cheese_data_refine(cheese_df)
-
-# ================ CheeseDfo 테스트 ================
-# dfo = CheeseDfo()
-# print('\nwow!!!!!\n')
-# df = dfo.new()
-# print(f'치즈 Dfo 테스트\n\n', df.head(10))
-
-# =================================================
-# kdd = ReviewKdd()
-# temp = kdd.crawling()
-# kdd.save_csv(temp)
-
-# dfo = ReviewDfo()
-# review_data_frame = dfo.review_df()
-# df = dfo.review_df_refine(review_data_frame)
-# print("-------------------------------------")
-# print(df.head(10))
-
-    
