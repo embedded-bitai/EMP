@@ -7,7 +7,6 @@ import HomeInfo from "../containers/cmm/hom/HomeInfo.jsx";
 import ContactUs from "../containers/cmm/hom/ContactUs.jsx";
 import { ChatbotContainer as Chatbot } from "../containers/cop/chatbot"
 import FAQ from "../containers/cmm/hom/Faq.jsx";
-import Tooltip from '@material-ui/core/Tooltip'
 
   const Subheading = tw.span`uppercase tracking-widest font-bold text-primary-500`;
   const HighlightedText = tw.span`text-primary-500`;
@@ -16,9 +15,7 @@ export default function Home () {
   return( <div className="home">
   {/* <Header /> */}
   <AnimationRevealPage>
-    <Tooltip title="구매 고객 리뷰 리스트 CRUD">
     <Chatbot/>
-    </Tooltip>
     <MainBackground />
     <HomeInfo />
   <FAQ
