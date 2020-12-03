@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'; //eslint-disable-line
 import AnimationRevealPage from "../components/cmm/AnimationEffect.jsx";
 import MainBackground from "../containers/cmm/hom/MainBackground.jsx";
 import HomeInfo from "../containers/cmm/hom/HomeInfo.jsx";
-import ContactUs from "../containers/cmm/hom/ContactUs.jsx";
+import ContactUs from "../containers/cmm/hom/SubscribeForm.jsx";
 import { ChatbotContainer as Chatbot } from "../containers/cop/chatbot"
 import FAQ from "../containers/cmm/hom/Faq.jsx";
 

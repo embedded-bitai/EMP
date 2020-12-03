@@ -126,7 +126,7 @@ def initialize_routes(api):
     api.add_resource(Chatbot, '/api/chatbot')
 
     # ================================= Chatbot =================================
-    api.add_resource(Recommend, '/api/recommend')
+    api.add_resource(Recommend, '/api/recommend', '/api/recommend/<user_id>')
 
 
 @home.errorhandler(500)
