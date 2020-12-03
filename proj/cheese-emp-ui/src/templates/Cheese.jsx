@@ -5,6 +5,8 @@ import CheeseTop from "../containers/cop/itm/cheese/CheeseTop.jsx";
 import CheeseTexture from "../containers/cop/itm/cheese/CheeseTexture.jsx";
 import { BestReview } from '../containers/cop/itm/cheese'
 import CheeseMenu from "../containers/cop/itm/cheese/CheeseMenu.jsx";
+import { ChatbotContainer as Chatbot } from "../containers/cop/chatbot"
+
 
 export default function Cheese () {
   // const Subheading = tw.span`tracking-wider text-sm font-medium`;
@@ -14,6 +16,7 @@ export default function Cheese () {
   return (
     <div>
       <AnimationRevealPage>
+        <Chatbot/>
         <CheeseTop
           heading={<>Delicious & Affordable <HighlightedText>Cheese Near You.</HighlightedText></>}
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
