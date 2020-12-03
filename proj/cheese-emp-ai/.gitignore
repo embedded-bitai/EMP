@@ -29,7 +29,6 @@ __pycache__
 com_cheese_api.egg-info/
 data_set/
 private_run.py
-recommend_dfo.py
 cheese_knn_model.pkl
 user_svm_model.pkl
 
