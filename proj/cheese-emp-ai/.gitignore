@@ -24,7 +24,6 @@ yarn-error.log*
 
 # Custom ingnore
 .vscode/
-data_set/.ipynb_checkpoints/
 __pycache__
 com_cheese_api.egg-info/
 data_set/
